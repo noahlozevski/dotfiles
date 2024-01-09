@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Path to yabai configuration
 yabai_config=~/.config/yabai/yabairc
@@ -15,5 +15,5 @@ if ! grep -q "app=\"^$escapedApp\$\" manage=off" "$yabai_config"; then
     echo "yabai -m rule --add app=\"^$escapedApp\$\" manage=off" >> "$yabai_config"
 
     # Reload yabai configuration
-    yabai -m config --load
+    yabai --restart-service
 fi
