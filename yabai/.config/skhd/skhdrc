@@ -14,37 +14,33 @@ alt - m : yabai -m display --focus east
 # Layout
 # rotate layout clockwise
 alt + shift - o : yabai -m space --rotate 270
-# flip across vertical
+# flip across vertical axis
 alt + shift - y : yabai -m space --mirror y-axis
-# flip across horizontal
+# flip across horizontal axis
 alt + shift - x : yabai -m space --mirror x-axis
 
-# toggle window float
-# the grid is 4x4,
-# the first two numbers are the position of the window,
-# the last two numbers are the size of the window
+# toggle window float (removes from tiling)
 alt + shift - t : yabai -m window --toggle float --grid 5:5:1:1:3:3
 
-# Window resizing
-# toggle fullscreen (kinda wonky bc it keeps the grid in the background)
+# toggle fullscreen mode for window
 alt + shift - m : yabai -m window --toggle zoom-fullscreen
 
 # equalize window size in the current space
 # similar to vim command ^w =
 alt + shift - e : yabai -m space --balance
 
-# Moving windows
-# swap windows across spaces
+# swap windows across spaces (within the same monitor)
 alt + shift - j : yabai -m window --swap south
 alt + shift - k : yabai -m window --swap north
 alt + shift - h : yabai -m window --swap west
 alt + shift - l : yabai -m window --swap east
-# move window and split
-# this swaps the window into the direction and absorbs it
+
+# insert the window into the direction and absorbs it
 ctrl + alt - j : yabai -m window --warp south
 ctrl + alt - k : yabai -m window --warp north
 ctrl + alt - h : yabai -m window --warp west
 ctrl + alt - l : yabai -m window --warp east
+
 # move window to other monitor
 ctrl + alt - n : yabai -m window --display west; yabai -m display --focus west;
 ctrl + alt - m : yabai -m window --display east; yabai -m display --focus east;
@@ -68,8 +64,7 @@ ctrl + alt - s : yabai --start-service
 ctrl + alt - b: ~/.config/yabai/add_to_blacklist.sh
 
 
-###### examples
-
+##################################### examples #####################################
 # focus window
 # alt - h : yabai -m window --focus west
 
