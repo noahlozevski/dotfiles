@@ -64,6 +64,9 @@ alt + shift - 9 : yabai -m window --space 9
 ctrl + alt - q : yabai --stop-service
 ctrl + alt - s : yabai --start-service
 
+# quick blacklist a program from yabai
+ctrl + alt - b: ~/.config/yabai/add_to_blacklist.sh
+
 
 ###### examples
 
