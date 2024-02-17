@@ -4,9 +4,9 @@ if [[ $# -eq 1 ]]; then
     selected=$1
 else
     running_sessions=$(tmux list-sessions -F "#{session_name}" 2> /dev/null)
-    workplaces=$(find /Users/noahlozevski/code -mindepth 1 -maxdepth 1 -type d ! -name '.*' | xargs -I {} basename "{}")
+    workplaces=$(find /Users/noahlozevski/code -mindepth 1 -maxdepth 1 -type d ! -name '.*')
     # start a fuzzy find search on all workspace folders
-    selected=$({ echo $running_sessions && echo $workplaces } | sort | uniq | fzf)
+    selected=$({ echo $workplaces && echo $running_sessions } | sort | uniq | fzf)
 fi
 
 if [[ -z $selected ]]; then
