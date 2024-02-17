@@ -3,8 +3,10 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
+    running_sessions=$(tmux list-sessions -F "#{session_name}" 2> /dev/null)
+    workplaces=$(find /Users/noahlozevski/code -mindepth 1 -maxdepth 1 -type d ! -name '.*' | xargs -I {} basename "{}")
     # start a fuzzy find search on all workspace folders
-    selected=$(find ~/code -mindepth 1 -maxdepth 1 -type d | fzf)
+    selected=$({ echo $running_sessions && echo $workplaces } | sort | uniq | fzf)
 fi
 
 if [[ -z $selected ]]; then
