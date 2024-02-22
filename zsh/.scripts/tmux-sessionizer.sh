@@ -1,12 +1,14 @@
 #!/bin/zsh
 
+DEFAULT_CODE_DIR=/Users/noahlozevsk/code
+
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
     running_sessions=$(tmux list-sessions -F "#{session_name}" 2> /dev/null)
-    workplaces=$(find /Users/noahlozevski/code -mindepth 1 -maxdepth 1 -type d ! -name '.*')
+    workplaces=$(find $DEFAULT_CODE_DIR -mindepth 1 -maxdepth 1 -type d ! -name '.*')
     # start a fuzzy find search on all workspace folders
-    selected=$({ echo $workplaces && echo $running_sessions } | sort | uniq | fzf)
+    selected=$({ echo $running_sessions && echo $workplaces } | sort --reverse | uniq | fzf)
 fi
 
 if [[ -z $selected ]]; then
@@ -27,7 +29,6 @@ fi
 
 if [[ -z $TMUX ]]; then
     tmux attach-session -t $selected_name
-else 
+else
     tmux switch-client -t $selected_name
 fi
-tmux switch-client -t $selected_name
