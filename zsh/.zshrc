@@ -153,7 +153,7 @@ editstuff () {
 # variables
 export EDITOR=nvim
 export VISUAL="$EDITOR"
-export XDG_CONFIG_HOME=~
+export XDG_CONFIG_HOME=~/.config
 # export FZF_DEFAULT_COMMAND='ag -g ""'
 
 # lang config
