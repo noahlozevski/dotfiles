@@ -25,6 +25,8 @@ vim.opt.hlsearch = true
 vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
+-- show preview of substitution live
+vim.opt.inccommand = "nosplit"
 
 vim.opt.sidescroll = 1
 vim.opt.sidescrolloff = 8
