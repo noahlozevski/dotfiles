@@ -3,10 +3,11 @@ local lsp = require('lsp-zero').preset({})
 lsp.ensure_installed({
     -- add more servers / languages
     'tsserver',
-    'eslint',
+    -- 'eslint',
     'rust_analyzer',
     'lua_ls',
     'clangd',
+    'efm',
 })
 
 lsp.nvim_workspace()
@@ -265,7 +266,7 @@ require("mason-lspconfig").setup_handlers {
     end,
     ["efm"] = function()
         local eslint = require('efmls-configs.linters.eslint_d')
-        local prettier = require('efmls-configs.formatters.prettier_d')
+        local prettier = require('efmls-configs.formatters.prettier')
 
         -- EFM formatting language specs
         local languages = require('efmls-configs.defaults').languages()
