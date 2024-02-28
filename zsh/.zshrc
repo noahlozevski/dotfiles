@@ -145,7 +145,7 @@ alias codee='cd ~/code'
 
 editstuff () {
     cur_dir=$(pwd)
-    cd ~/nvim
+    cd "$XDG_CONFIG_HOME/nvim"
     nvim .
     cd $cur_dir
 }
@@ -194,3 +194,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$HOME/.jenv/bin:$PATH"
 export ANDROID_HOME=/Users/$USER/Library/Android/sdk
 eval "$(jenv init -)"
+
+resource() {
+    source ~/.zshrc
+}
