@@ -1,6 +1,7 @@
 #!/bin/zsh
 
-DEFAULT_CODE_DIR=/Users/noahlozevsk/code
+# use the default code dir if not set already
+DEFAULT_CODE_DIR=${CODE_DIR:-/Users/noahlozevski/code}
 
 if [[ $# -eq 1 ]]; then
     selected=$1
