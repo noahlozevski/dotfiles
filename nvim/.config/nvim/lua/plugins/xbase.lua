@@ -54,6 +54,7 @@ return {
                 --- Open run picker. showing targets, devices and configuration
                 run_picker = "<leader>r",   --- set to 0 to disable
                 --- Open watch picker. showing run or build, targets, devices and configuration
+                -- watch_picker = "<leader>s", --- set to 0 to disable
                 watch_picker = "<leader>s", --- set to 0 to disable
                 --- A list of all the previous pickers
                 all_picker = "<leader>ef",  --- set to 0 to disable

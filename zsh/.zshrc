@@ -195,6 +195,7 @@ export PATH="$HOME/.jenv/bin:$PATH"
 export ANDROID_HOME=/Users/$USER/Library/Android/sdk
 eval "$(jenv init -)"
 
+rtx_activate
 resource() {
     source ~/.zshrc
 }
