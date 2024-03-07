@@ -8,6 +8,7 @@ lsp.ensure_installed({
     'lua_ls',
     'clangd',
     'efm',
+    'tailwindcss',
 })
 
 lsp.nvim_workspace()
@@ -265,19 +266,23 @@ require("mason-lspconfig").setup_handlers {
         }
     end,
     ["efm"] = function()
-        local eslint = require('efmls-configs.linters.eslint_d')
+        -- local eslint = require('efmls-configs.linters.eslint_d')
         local prettier = require('efmls-configs.formatters.prettier')
 
         -- EFM formatting language specs
         local languages = require('efmls-configs.defaults').languages()
 
+        -- default to using the other eslint server
+        local servers = { prettier }
+
         languages = vim.tbl_extend('force', languages, {
-            typescript = { eslint, prettier },
-            ["typescript.jsx"] = { eslint, prettier },
-            typescriptreact = { eslint, prettier },
-            javascript = { eslint, prettier },
-            ["javascript.jsx"] = { eslint, prettier },
-            javascriptreact = { eslint, prettier }
+            typescript = servers,
+            ["typescript.jsx"] = servers,
+            typescriptreact = servers,
+            javascript = servers,
+            ["javascript.jsx"] = servers,
+            javascriptreact = servers,
+            json = servers,
         })
 
         -- manual lsp config must come after mason-lspconfig
