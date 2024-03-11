@@ -31,6 +31,7 @@ return {
                     "smart",
                     -- "truncate",
                 },
+                file_ignore_patterns = { ".git/" },
             },
             fzf = {
                 fuzzy = true,                   -- false will only do exact matching
@@ -42,7 +43,7 @@ return {
             extensions = {
                 live_grep_args = {
                     auto_quoting = true, -- enable/disable auto-quoting
-                    mappings = { -- extend mappings
+                    mappings = {         -- extend mappings
                         i = {
                             ["<C-k>"] = lga_actions.quote_prompt(),
                             ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
@@ -74,9 +75,9 @@ return {
         --     })
         -- end
         --
-        vim.keymap.set('n', '<C-p>', builtin.find_files, { silent = true })
+        vim.keymap.set('n', '<C-p>', function() builtin.find_files({ hidden = true }) end, { silent = true })
         -- vim.keymap.set('n', '<C-p>', function() builtin.find_files({ path_display = path_display }) end, { silent = true })
-        vim.keymap.set('n', '<leader>fg', builtin.git_files, { silent = true })
+        vim.keymap.set('n', '<leader>fg', function() builtin.git_files({ show_untracked = true }) end, { silent = true })
         -- this version of live grep allows to pass args
         vim.keymap.set('n', '<leader>fl', extensions.live_grep_args.live_grep_args, { silent = true })
         vim.keymap.set('n', '<leader>fb', builtin.buffers, { silent = true })
@@ -85,7 +86,7 @@ return {
         vim.api.nvim_set_keymap('n', '<leader>dd', '<cmd>Telescope diagnostics<CR>', { noremap = true, silent = true })
 
         vim.keymap.set('n', '<leader>ff', '<cmd>Telescope<CR>', { noremap = true, silent = true })
-        vim.keymap.set('n', '<leader>fa', '<cmd>Telescope find_files hidden=true<CR>', { noremap = true, silent = true })
+        vim.keymap.set('n', '<leader>fa', function() builtin.find_files({ hidden = true, no_ignore = true, no_ignore_parent = true }) end, { noremap = true, silent = true })
         -- vim.keymap.set('n', '<leader>fg', builtin.git_files, {})
         -- vim.keymap.set('n', '<leader>fl', builtin.live_grep, {})
         -- vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
