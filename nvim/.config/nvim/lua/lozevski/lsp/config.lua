@@ -219,6 +219,10 @@ require("mason-lspconfig").setup_handlers {
             },
         }
     end,
+    ["jdtls"] = function()
+        lspconfig.jdtls.setup { autostart = false }
+        -- pass on configing this plugin, this is triggered when opening java files
+    end,
     ["tsserver"] = function()
         lspconfig.tsserver.setup {
             on_attach = on_attach,
