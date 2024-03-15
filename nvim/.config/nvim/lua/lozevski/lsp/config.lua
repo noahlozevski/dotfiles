@@ -271,7 +271,13 @@ require("mason-lspconfig").setup_handlers {
     end,
     ["efm"] = function()
         -- local eslint = require('efmls-configs.linters.eslint_d')
-        local prettier = require('efmls-configs.formatters.prettier')
+        -- choose prettier_d if it is runnable / accessible
+        local prettier
+        if vim.fn.executable('prettierd') == 1 then
+            prettier = require('efmls-configs.formatters.prettier_d')
+        else
+            prettier = require('efmls-configs.formatters.prettier')
+        end
 
         -- EFM formatting language specs
         local languages = require('efmls-configs.defaults').languages()
