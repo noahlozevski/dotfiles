@@ -114,4 +114,11 @@ vim.cmd([[
 --
 -- -- This enables the hover window automatically if the the cursor is anywhere in the line
 -- vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
---
+
+-- @param num number
+-- @return void
+function setTabStop(num)
+    vim.opt.tabstop = num
+    vim.opt.softtabstop = num
+    vim.opt.shiftwidth = num
+end
