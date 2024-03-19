@@ -5,6 +5,7 @@ local function find_jdtls_java()
   local jvm_locations = {
     "/Library/Java/JavaVirtualMachines/amazon-corretto-17.jdk/Contents/Home/bin/java",
     "/usr/lib/jvm/java-17-amazon-corretto/bin/java",
+    "/usr/lib/jvm/java-17-amazon-corretto.x86_64/bin/java",
   }
   for _, path in ipairs(jvm_locations) do
     if U.exists(path) then
