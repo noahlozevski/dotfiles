@@ -399,7 +399,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 
-pcall(require, 'lozevski.lsp.work')
+pcall(require, 'work.lsp')
 
 lsp.setup()
 
