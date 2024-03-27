@@ -1,9 +1,13 @@
 return {
     'github/copilot.vim',
+    enabled = function()
+        if vim.g.is_work then
+            return false
+        else
+            return true
+        end
+    end,
     config = function()
-        vim.g.copilot_assume_mapped = true
-
-        -- Accepts the completion
         vim.api.nvim_set_keymap("i",
             "<C-Space>",
             'copilot#Accept("<CR>")',

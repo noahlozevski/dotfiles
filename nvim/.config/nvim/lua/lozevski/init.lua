@@ -1,3 +1,5 @@
+pcall(require, "work.before")
 require("lozevski.remap")
 require("lozevski.packer")
 require("lozevski.set")
+pcall(require, "work.after")
