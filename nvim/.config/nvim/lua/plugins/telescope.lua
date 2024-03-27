@@ -8,7 +8,7 @@ return {
     },
     config = function()
         local telescope = require('telescope')
-        local lga_actions = require("telescope-live-grep-args.actions")
+        -- local lga_actions = require("telescope-live-grep-args.actions")
 
         telescope.setup({
             defaults = {
@@ -40,22 +40,40 @@ return {
                 case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
                 -- the default case_mode is "smart_case"
             },
-            extensions = {
-                live_grep_args = {
-                    auto_quoting = true, -- enable/disable auto-quoting
-                    mappings = {         -- extend mappings
-                        i = {
-                            ["<C-k>"] = lga_actions.quote_prompt(),
-                            ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
-                        },
-                    },
+            pickers = {
+                live_grep = {
+                    file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+                    additional_args = function(_)
+                        return { "--hidden" }
+                    end
+                },
+                -- live_grep_args = {
+                --     file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+                --     additional_args = function(_)
+                --         return { "--hidden" }
+                --     end
+                -- },
+                find_files = {
+                    file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+                    hidden = true
                 }
-            }
+            },
+            -- extensions = {
+            --     live_grep_args = {
+            --         auto_quoting = true, -- enable/disable auto-quoting
+            --         mappings = {         -- extend mappings
+            --             i = {
+            --                 ["<C-k>"] = lga_actions.quote_prompt(),
+            --                 ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+            --             },
+            --         },
+            --     }
+            -- }
         })
 
         require("telescope").load_extension("live_grep_args")
         local builtin = require('telescope.builtin')
-        local extensions = telescope.extensions
+        -- local extensions = telescope.extensions
 
         -- vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
         -- vim.keymap.set('n', '<C-p>', builtin.git_files, {})
@@ -79,14 +97,17 @@ return {
         -- vim.keymap.set('n', '<C-p>', function() builtin.find_files({ path_display = path_display }) end, { silent = true })
         vim.keymap.set('n', '<leader>fg', function() builtin.git_files({ show_untracked = true }) end, { silent = true })
         -- this version of live grep allows to pass args
-        vim.keymap.set('n', '<leader>fl', extensions.live_grep_args.live_grep_args, { silent = true })
+        -- vim.keymap.set('n', '<leader>fl', extensions.live_grep_args.live_grep_args, { silent = true })
+        vim.keymap.set('n', '<leader>fl', builtin.live_grep, { silent = true })
         vim.keymap.set('n', '<leader>fb', builtin.buffers, { silent = true })
         vim.keymap.set('n', '<leader>fh', builtin.help_tags, { silent = true })
         -- Open telescope diagnostic window
         vim.api.nvim_set_keymap('n', '<leader>dd', '<cmd>Telescope diagnostics<CR>', { noremap = true, silent = true })
 
         vim.keymap.set('n', '<leader>ff', '<cmd>Telescope<CR>', { noremap = true, silent = true })
-        vim.keymap.set('n', '<leader>fa', function() builtin.find_files({ hidden = true, no_ignore = true, no_ignore_parent = true }) end, { noremap = true, silent = true })
+        vim.keymap.set('n', '<leader>fa',
+            function() builtin.find_files({ hidden = true, no_ignore = true, no_ignore_parent = true }) end,
+            { noremap = true, silent = true })
         -- vim.keymap.set('n', '<leader>fg', builtin.git_files, {})
         -- vim.keymap.set('n', '<leader>fl', builtin.live_grep, {})
         -- vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
