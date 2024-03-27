@@ -9,16 +9,16 @@ return {
     config = function()
         local actions = require("gitlinker.actions")
         local hosts = require("gitlinker.hosts")
+
         local callbacks = {
-            ["github.com"]     = hosts.get_github_type_url,
-            ["gitlab.com"]     = hosts.get_gitlab_type_url,
-            ["bitbucket.org"]  = hosts.get_bitbucket_type_url,
+            ["github.com"]              = hosts.get_github_type_url,
+            ["gitlab.com"]              = hosts.get_gitlab_type_url,
+            ["bitbucket.org"]           = hosts.get_bitbucket_type_url,
         }
 
         local work_gitlinker = {}
         if pcall(require, "work.gitlinker") then
             work_gitlinker = require("work.gitlinker")
-            return
         end
 
         require("gitlinker").setup({
@@ -32,12 +32,20 @@ return {
             },
             callbacks = vim.tbl_extend('force', callbacks, work_gitlinker.callbacks),
             -- default mapping to call url generation with action_callback
-            mappings = "<leader>gy"
+            mappings = nil
+            -- mappings = "<leader>gy"
         })
 
-        vim.api.nvim_set_keymap('n', '<leader>gY', '<cmd>lua require"gitlinker".get_repo_url()<cr>', { silent = true })
+        vim.api.nvim_set_keymap('n', '<leader>gY', '<cmd>lua require"gitlinker".get_buf_range_url("n")<cr>',
+            { silent = true })
+        vim.api.nvim_set_keymap('v', '<leader>gY', '<cmd>lua require"gitlinker".get_buf_range_url("v")<cr>',
+            { silent = true })
+
         vim.api.nvim_set_keymap('n', '<leader>gB',
-            '<cmd>lua require"gitlinker".get_repo_url({action_callback = require"gitlinker.actions".open_in_browser})<cr>',
+            '<cmd>lua require"gitlinker".get_buf_range_url("n", { action_callback = require"gitlinker.actions".open_in_browser })<cr>',
+            { silent = true })
+        vim.api.nvim_set_keymap('v', '<leader>gB',
+            '<cmd>lua require"gitlinker".get_buf_range_url("v", { action_callback = require"gitlinker.actions".open_in_browser })<cr>',
             { silent = true })
     end
 }
