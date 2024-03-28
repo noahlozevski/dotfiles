@@ -1,3 +1,5 @@
+local default_ignored_files = { 'node_modules', '.git/', '.venv' }
+
 return {
     'nvim-telescope/telescope.nvim',
     dependencies = {
@@ -42,19 +44,19 @@ return {
             },
             pickers = {
                 live_grep = {
-                    file_ignore_patterns = { 'node_modules', '.git', '.venv' },
-                    additional_args = function(_)
-                        return { "--hidden" }
-                    end
+                    file_ignore_patterns = default_ignored_files,
+                    -- additional_args = function(_)
+                    --     return { "--hidden" }
+                    -- end
                 },
                 -- live_grep_args = {
-                --     file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+                --     file_ignore_patterns = default_ignored_files,
                 --     additional_args = function(_)
                 --         return { "--hidden" }
                 --     end
                 -- },
                 find_files = {
-                    file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+                    file_ignore_patterns = default_ignored_files,
                     hidden = true
                 }
             },
@@ -93,21 +95,46 @@ return {
         --     })
         -- end
         --
+
+        function search_all_files()
+            builtin.live_grep({
+                hidden = true,
+                no_ignore = true,
+                no_ignore_parent = true,
+                file_ignore_patterns = {}
+            })
+        end
+
+        function find_all_files()
+            builtin.find_files({
+                hidden = true,
+                no_ignore = true,
+                no_ignore_parent = true,
+                file_ignore_patterns = {},
+            })
+        end
+
+        -- find all ( filtered ) files
         vim.keymap.set('n', '<C-p>', function() builtin.find_files({ hidden = true }) end, { silent = true })
+        -- find all files
+        vim.keymap.set('n', '<leader>faf', find_all_files, { noremap = true, silent = true })
         -- vim.keymap.set('n', '<C-p>', function() builtin.find_files({ path_display = path_display }) end, { silent = true })
+
+        -- find all git files
         vim.keymap.set('n', '<leader>fg', function() builtin.git_files({ show_untracked = true }) end, { silent = true })
+
         -- this version of live grep allows to pass args
         -- vim.keymap.set('n', '<leader>fl', extensions.live_grep_args.live_grep_args, { silent = true })
+        -- search all (filtered) files
         vim.keymap.set('n', '<leader>fl', builtin.live_grep, { silent = true })
+        -- search all files
+        vim.keymap.set('n', '<leader>fal', search_all_files, { silent = true })
+
         vim.keymap.set('n', '<leader>fb', builtin.buffers, { silent = true })
-        vim.keymap.set('n', '<leader>fh', builtin.help_tags, { silent = true })
-        -- Open telescope diagnostic window
+        -- vim.keymap.set('n', '<leader>fh', builtin.help_tags, { silent = true })
         vim.api.nvim_set_keymap('n', '<leader>dd', '<cmd>Telescope diagnostics<CR>', { noremap = true, silent = true })
 
         vim.keymap.set('n', '<leader>ff', '<cmd>Telescope<CR>', { noremap = true, silent = true })
-        vim.keymap.set('n', '<leader>fa',
-            function() builtin.find_files({ hidden = true, no_ignore = true, no_ignore_parent = true }) end,
-            { noremap = true, silent = true })
         -- vim.keymap.set('n', '<leader>fg', builtin.git_files, {})
         -- vim.keymap.set('n', '<leader>fl', builtin.live_grep, {})
         -- vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
