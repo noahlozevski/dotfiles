@@ -164,6 +164,8 @@ alias vim=nvim
 # rust 
 source "$HOME/.cargo/env"
 
+# accept suggestion for zsh-autosuggestions
+bindkey '^ ' autosuggest-accept
 
 rtx_activate() {
     # rtx
