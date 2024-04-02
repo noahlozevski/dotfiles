@@ -33,7 +33,8 @@ return {
                     "smart",
                     -- "truncate",
                 },
-                file_ignore_patterns = { ".git/" },
+                file_ignore_patterns = {},
+                -- file_ignore_patterns = { ".git/" },
             },
             fzf = {
                 fuzzy = true,                   -- false will only do exact matching
@@ -44,20 +45,22 @@ return {
             },
             pickers = {
                 live_grep = {
-                    file_ignore_patterns = default_ignored_files,
-                    -- additional_args = function(_)
-                    --     return { "--hidden" }
-                    -- end
+                    file_ignore_patterns = {},
+                    -- file_ignore_patterns = default_ignored_files,
+                    additional_args = function(_)
+                        return { "--hidden" }
+                    end
                 },
                 -- live_grep_args = {
                 --     file_ignore_patterns = default_ignored_files,
-                --     additional_args = function(_)
-                --         return { "--hidden" }
-                --     end
                 -- },
                 find_files = {
-                    file_ignore_patterns = default_ignored_files,
-                    hidden = true
+                    file_ignore_patterns = {},
+                    -- file_ignore_patterns = default_ignored_files,
+                    hidden = true,
+                    additional_args = function(_)
+                        return { "--hidden" }
+                    end,
                 }
             },
             -- extensions = {
@@ -115,7 +118,14 @@ return {
         end
 
         -- find all ( filtered ) files
-        vim.keymap.set('n', '<C-p>', function() builtin.find_files({ hidden = true }) end, { silent = true })
+        vim.keymap.set('n', '<C-p>', function()
+            builtin.find_files({
+                hidden = true,
+                -- no_ignore = true,
+                -- no_ignore_parent = true,
+                file_ignore_patterns = default_ignored_files,
+            })
+        end, { silent = true })
         -- find all files
         vim.keymap.set('n', '<leader>faf', find_all_files, { noremap = true, silent = true })
         -- vim.keymap.set('n', '<C-p>', function() builtin.find_files({ path_display = path_display }) end, { silent = true })
@@ -126,7 +136,13 @@ return {
         -- this version of live grep allows to pass args
         -- vim.keymap.set('n', '<leader>fl', extensions.live_grep_args.live_grep_args, { silent = true })
         -- search all (filtered) files
-        vim.keymap.set('n', '<leader>fl', builtin.live_grep, { silent = true })
+        vim.keymap.set('n', '<leader>fl', function()
+            builtin.live_grep({
+                -- no_ignore = true,
+                -- no_ignore_parent = true,
+                file_ignore_patterns = default_ignored_files,
+            })
+        end, { silent = true })
         -- search all files
         vim.keymap.set('n', '<leader>fal', search_all_files, { silent = true })
 
