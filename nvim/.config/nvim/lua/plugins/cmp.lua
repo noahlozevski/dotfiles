@@ -1,7 +1,9 @@
 return {
     'hrsh7th/nvim-cmp',
     -- TODO: figure out issues with the eventing, cant get everything to load right lazily
-    -- event = "InsertEnter",
+    -- now, this is just triggered on the same event as lsp
+    -- this needs to be ran after the lsp config
+    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
         { 'L3MON4D3/LuaSnip' }, -- Required
         -- { 'lukas-reineke/cmp-under-comparator' },

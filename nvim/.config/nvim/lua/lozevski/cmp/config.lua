@@ -71,14 +71,14 @@ cmp.setup.cmdline('/', {
 cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-        { name = 'cmdline' },
-        { name = 'async_path' },
-        { name = 'zsh', },
-        { name = "cmdline_history" },
-    },
-    {
-        fuzzy_buffer_conf
-    })
+            { name = 'cmdline' },
+            { name = 'async_path' },
+            { name = 'zsh', },
+            { name = "cmdline_history" },
+        },
+        {
+            fuzzy_buffer_conf
+        })
 })
 
 local opts = {
@@ -112,6 +112,7 @@ local opts = {
                 ellipsis_char = '...',
                 preset = 'default',
             })(entry, vim_item)
+
             local strings = vim.split(kind.kind, "%s", { trimempty = true })
             kind.kind = " " .. (strings[1] or "") .. " "
             local menu = ({
@@ -121,7 +122,18 @@ local opts = {
                 vsnip = "VSnip",
                 nvim_lua = "Lua",
             })[entry.source.name] or strings[2] or ""
-            kind.menu = "    (" .. (menu) .. ")"
+
+            -- Display which LSP servers this item came from.
+            local lspserver_name = nil
+            pcall(function()
+                lspserver_name = entry.source.source.client.name
+                -- vim_item.menu = lspserver_name
+            end)
+            if lspserver_name == nil then
+                lspserver_name = menu
+            end
+
+            kind.menu = "    (" .. (lspserver_name) .. ")"
             return kind
         end,
     },
@@ -136,7 +148,7 @@ local opts = {
             winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
             col_offset = -3,
             side_padding = 0,
-            scrollbar = false,
+            scrollbar = true,
         }),
         documentation = {
             border = border "CmpDocBorder",
@@ -215,24 +227,24 @@ local opts = {
         -- end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-        { name = 'vsnip' }, -- For vsnip users.
-        -- { name = 'calc' }, cant get this to work but would be cool ???
-        -- { name = 'tmux' },
-        -- { name = 'emoji' },
-        { name = 'nvim_lua' },
-    },
-    {
-        { name = 'nvim_lsp_signature_help' },
-    },
-    {
-        { name = 'async_path' },
-        -- pulls strings from whole workspace
-        { name = "rg" },
-        -- buffer results usually arent as helpful
-        -- { name = 'buffer' },
-        fuzzy_buffer_conf,
-    })
+            { name = 'nvim_lsp' },
+            { name = 'vsnip' }, -- For vsnip users.
+            -- { name = 'calc' }, cant get this to work but would be cool ???
+            -- { name = 'tmux' },
+            -- { name = 'emoji' },
+            { name = 'nvim_lua' },
+        },
+        {
+            { name = 'nvim_lsp_signature_help' },
+        },
+        {
+            { name = 'async_path' },
+            -- pulls strings from whole workspace
+            { name = "rg" },
+            -- buffer results usually arent as helpful
+            -- { name = 'buffer' },
+            fuzzy_buffer_conf,
+        })
 }
 
 
