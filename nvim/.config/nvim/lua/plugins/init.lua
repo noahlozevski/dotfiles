@@ -40,7 +40,6 @@ return {
     'nyoom-engineering/oxocarbon.nvim',
     {
         'projekt0n/github-nvim-theme',
-        lazy = false,
     },
     {
         'rebelot/kanagawa.nvim'

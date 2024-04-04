@@ -1,7 +1,17 @@
 -- only configure cmp plugins here (dont make dependencies on lsp)
 -- require('lsp-zero.cmp').extend()
 
+-- helper for luasnip
+local has_words_before = function()
+    unpack = unpack or table.unpack
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
 local cmp = require('cmp')
+local luasnip = require('luasnip')
+require('luasnip.loaders.from_vscode').lazy_load()
+
 local compare = require('cmp.config.compare')
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local function border(hl_name)
@@ -73,7 +83,7 @@ cmp.setup.cmdline(':', {
     sources = cmp.config.sources({
             { name = 'cmdline' },
             { name = 'async_path' },
-            { name = 'zsh', },
+            -- { name = 'zsh', },
             { name = "cmdline_history" },
         },
         {
@@ -87,27 +97,9 @@ local opts = {
     },
     formatting = {
         fields = { "kind", "abbr", "menu" },
-        -- format = require('lspkind').cmp_format({
-        --     mode = 'symbol_text',
-        --     maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-        --     ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-        --     preset = 'default',
-        --     before = function(entry, vim_item)
-        --         -- This gives info about the source of the completion
-        --         vim_item.menu = ({
-        --             buffer = "Buffer",
-        --             fuzzy_buffer = "Buffer",
-        --             nvim_lsp = "LSP",
-        --             vsnip = "VSnip",
-        --             nvim_lua = "Lua",
-        --         })[entry.source.name]
-        --
-        --         return vim_item
-        --     end
-        -- })
         format = function(entry, vim_item)
             local kind = require("lspkind").cmp_format({
-                mode = "symbol_text",
+                -- mode = "symbol_text",
                 maxwidth = 50,
                 ellipsis_char = '...',
                 preset = 'default',
@@ -119,7 +111,7 @@ local opts = {
                 buffer = "Buffer",
                 fuzzy_buffer = "Buffer",
                 nvim_lsp = "LSP",
-                vsnip = "VSnip",
+                -- vsnip = "VSnip",
                 nvim_lua = "Lua",
             })[entry.source.name] or strings[2] or ""
 
@@ -138,9 +130,9 @@ local opts = {
         end,
     },
     snippet = {
-        -- REQUIRED - you must specify a snippet engine
+        -- -- REQUIRED - you must specify a snippet engine
         expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
+            luasnip.lsp_expand(args.body)
         end,
     },
     window = {
@@ -188,10 +180,10 @@ local opts = {
         ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
         ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-        -- ["<C-Space>"] = cmp.mapping.complete(),
-        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-
+        -- manually trigger the completion window
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ['<C-b>'] = cmp.mapping.scroll_docs(4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(-4),
         -- close the suggestion menu
         ['<C-e>'] = cmp.mapping.abort(),
         -- this is supposed to be 'safe' enter key mapping
@@ -206,45 +198,48 @@ local opts = {
         --     s = cmp.mapping.confirm({ select = true }),
         --     c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
         -- }),
-        ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        -- ["<Tab>"] = cmp.mapping(function(fallback)
-        --     if cmp.visible() then
-        --         cmp.select_next_item()
-        --     elseif vim.fn["vsnip#available"](1) == 1 then
-        --         feedkey("<Plug>(vsnip-expand-or-jump)", "")
-        --     elseif has_words_before() then
-        --         cmp.complete()
-        --     else
-        --         fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
-        --     end
-        -- end, { "i", "s" }),
-        -- ["<S-Tab>"] = cmp.mapping(function()
-        --     if cmp.visible() then
-        --         cmp.select_prev_item()
-        --     elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-        --         feedkey("<Plug>(vsnip-jump-prev)", "")
-        --     end
-        -- end, { "i", "s" }),
+        -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<CR>'] = cmp.mapping.confirm({ select = false }),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+            -- if cmp.visible() then
+            --     -- dont override the tab until we select a completion
+            --     fallback()
+            --     -- -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+            --     -- -- that way you will only jump inside the snippet region
+            if luasnip.expand_or_locally_jumpable() then
+                luasnip.expand_or_jump()
+            else
+                fallback()
+            end
+
+            -- elseif has_words_before() then
+            --     -- try to trigger the completion window for suggestions
+            --     cmp.complete()
+            -- else
+            --     fallback()
+            -- end
+        end, { "i", "s" }),
+
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+            -- if cmp.visible() then
+            --     -- dont override tab when nothing is selected
+            --     fallback()
+            if luasnip.jumpable(-1) then
+                luasnip.jump(-1)
+            else
+                fallback()
+            end
+        end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
-            { name = 'nvim_lsp' },
-            { name = 'vsnip' }, -- For vsnip users.
-            -- { name = 'calc' }, cant get this to work but would be cool ???
-            -- { name = 'tmux' },
-            -- { name = 'emoji' },
-            { name = 'nvim_lua' },
-        },
-        {
-            { name = 'nvim_lsp_signature_help' },
-        },
-        {
-            { name = 'async_path' },
-            -- pulls strings from whole workspace
-            { name = "rg" },
-            -- buffer results usually arent as helpful
-            -- { name = 'buffer' },
-            fuzzy_buffer_conf,
-        })
+        { name = 'luasnip', },
+        { name = 'nvim_lsp' },
+        { name = 'nvim_lua' },
+        { name = 'nvim_lsp_signature_help' },
+        { name = 'path' },
+        { name = "rg" },
+        fuzzy_buffer_conf,
+    })
 }
 
 
