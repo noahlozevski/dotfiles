@@ -295,6 +295,48 @@ require("mason-lspconfig").setup_handlers {
             json = servers,
         })
 
+        -- need to remove the stupid defaults efm adds on top of prettier that conflict with the settings defined in repo-specific prettier configs
+        -- personal neovim settings should not be mixed with lsp settings
+        local function remove_lsp_format_defaults(format_cmd)
+            -- efmls will pass any of these LSP formatting options from the neovim config here:
+            -- https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#formattingOptions
+            -- add more properties as these become defined / cause problems
+            local strs = {
+                "tabSize",
+                -- "insertSpaces",
+                -- "trimTrailingWhitespace",
+                -- "insertFinalNewLine",
+                -- "trimFinalNewlines"
+            }
+
+            local result = format_cmd
+            for _, prop in ipairs(strs) do
+                if string.find(result, prop) then
+                    result = string.gsub(result, "${[%S]-" .. prop .. "[%S]-}", "")
+                end
+            end
+            return result
+        end
+
+        for lang, lang_config in pairs(languages) do
+            for _, fmt_config in pairs(lang_config) do
+                local before = fmt_config["formatCommand"]
+                if before ~= nil then
+                    local updated_cmd = remove_lsp_format_defaults(before)
+                    -- if updated_cmd ~= before then
+                    --     vim.print("Lang: " .. lang .. "Changed command before: " .. before)
+                    --     vim.print("after: " .. updated_cmd)
+                    --     vim.print("--")
+                    -- end
+                    if updated_cmd ~= nil and updated_cmd ~= "" then
+                        fmt_config["formatCommand"] = updated_cmd
+                    end
+                end
+            end
+        end
+
+        vim.print(prettier["formatCommand"])
+
         -- manual lsp config must come after mason-lspconfig
         -- EFM for eslint / prettier / formatting stuff
         lspconfig.efm.setup {
