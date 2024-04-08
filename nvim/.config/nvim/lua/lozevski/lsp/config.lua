@@ -335,8 +335,6 @@ require("mason-lspconfig").setup_handlers {
             end
         end
 
-        vim.print(prettier["formatCommand"])
-
         -- manual lsp config must come after mason-lspconfig
         -- EFM for eslint / prettier / formatting stuff
         lspconfig.efm.setup {
