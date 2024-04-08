@@ -11,3 +11,4 @@ skhd --start-service
 brew install gnu-sed
 
 # essential tools
+brew install stow
