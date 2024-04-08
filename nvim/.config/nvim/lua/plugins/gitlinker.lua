@@ -16,7 +16,9 @@ return {
             ["bitbucket.org"]           = hosts.get_bitbucket_type_url,
         }
 
-        local work_gitlinker = {}
+        local work_gitlinker = {
+            callbacks = {}
+        }
         if pcall(require, "work.gitlinker") then
             work_gitlinker = require("work.gitlinker")
         end
