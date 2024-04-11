@@ -179,7 +179,18 @@ local opts = {
     mapping = cmp.mapping.preset.insert({
         ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
         ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-        ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+        ['<C-y>'] = cmp.mapping(function(fallback)
+            if cmp.visible() and cmp.get_active_entry() then
+                cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+            elseif vim.g.copilot_enabled and require("copilot.suggestion").is_visible() then
+                require("copilot.suggestion").accept()
+            elseif luasnip.expand_or_locally_jumpable() then
+                luasnip.expand_or_jump()
+            else
+                cmp.confirm({ select = false })
+                -- fallback()
+            end
+        end, { "i", "s" }),
         -- manually trigger the completion window
         ["<C-Space>"] = cmp.mapping.complete(),
         ['<C-b>'] = cmp.mapping.scroll_docs(4),
@@ -201,23 +212,33 @@ local opts = {
         -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         ['<CR>'] = cmp.mapping.confirm({ select = false }),
         ["<Tab>"] = cmp.mapping(function(fallback)
-            -- if cmp.visible() then
-            --     -- dont override the tab until we select a completion
-            --     fallback()
-            --     -- -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-            --     -- -- that way you will only jump inside the snippet region
-            if luasnip.expand_or_locally_jumpable() then
+        -- if cmp.visible() then
+        --     -- dont override the tab until we select a completion
+        --     fallback()
+        --     -- -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+        --     -- -- that way you will only jump inside the snippet region
+        -- if luasnip.expand_or_locally_jumpable() then
+        --     luasnip.expand_or_jump()
+        -- else
+        --     fallback()
+        -- end
+
+            if cmp.visible() and cmp.get_active_entry() then
+                cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+            elseif vim.g.copilot_enabled and require("copilot.suggestion").is_visible() then
+                require("copilot.suggestion").accept()
+            elseif luasnip.expand_or_locally_jumpable() then
                 luasnip.expand_or_jump()
             else
-                fallback()
+                cmp.confirm({ select = false })
+                -- fallback()
             end
-
-            -- elseif has_words_before() then
-            --     -- try to trigger the completion window for suggestions
-            --     cmp.complete()
-            -- else
-            --     fallback()
-            -- end
+        -- elseif has_words_before() then
+        --     -- try to trigger the completion window for suggestions
+        --     cmp.complete()
+        -- else
+        --     fallback()
+        -- end
         end, { "i", "s" }),
 
         ["<S-Tab>"] = cmp.mapping(function(fallback)

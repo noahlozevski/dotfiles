@@ -57,90 +57,26 @@ lsp.set_preferences({
 
 local function on_attach(client, bufnr)
     lsp.default_keymaps({ buffer = bufnr })
-    -- require('lsp-format').on_attach(client)
-    -- local opts = { buffer = bufnr, remap = false }
-    --
-    -- -- This enables auto format on save with all available lsp servers for the file type
-    -- -- lsp.buffer_autoformat()
-    -- -- Enables async format on save capability for a set of servers
-    --
-    -- -- -- Asynchronously autoformat the file on save
-    -- -- if vim.tbl_contains(allowed_format_servers, client.name) then
-    -- --     require('lsp-format').on_attach(client)
-    -- -- end
-    -- --
-    -- -- format the file using default lsp server
-    -- -- vim.keymap.set({ 'n', 'x' }, 'gq', function()
-    -- --     vim.lsp.buf.format({
-    -- --         async = false,
-    -- --         timeout_ms = 10000,
-    -- --         -- filter = allow_format(allowed_format_servers)
-    -- --         -- filter = function(client)
-    -- --         --     return client.name ~= 'null-ls'
-    -- --         -- end
-    -- --     })
-    -- -- end)
-    --
-    -- -- formats the file
-    -- -- vim.keymap.set({ 'n', 'x' }, '<leader>f', function() vim.lsp.buf.format() end, { buffer = bufnr, remap = false, desc = "[lsp] format" })
-    --
-    -- vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-    -- vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-    -- -- vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-    --
-    -- -- Opens a popup with a list of all the diagnostics from the lsp for the current line
-    -- vim.api.nvim_set_keymap('n', '<leader>do', '<cmd>lua vim.diagnostic.open_float()<CR>',
-    --     { noremap = true, silent = true })
-    --
-    -- -- -- Jump to next / previous diagnotic
-    -- -- vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-    -- vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-    -- vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-    -- vim.keymap.set("n", "<leader>da", function() vim.lsp.buf.code_action() end, opts)
-    -- vim.keymap.set("n", "<leader>dr", function() vim.lsp.buf.references() end, opts)
-    -- vim.keymap.set("n", "<leader>dn", function() vim.lsp.buf.rename() end, opts)
-    -- vim.keymap.set("n", "<leader>di", function() vim.lsp.buf.implementation() end, opts)
-    -- vim.keymap.set("n", "<leader>dc", function() vim.lsp.buf.declaration() end, opts)
-    -- -- already mapped to gd
-    -- -- vim.keymap.set("n", "<leader>df", function() vim.lsp.buf.definition() end, opts)
-    -- vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 end
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if client.server_capabilities.hoverProvider then
-            vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = args.buf })
-        end
-        if client.server_capabilities.signatureHelpProvider then
-            vim.keymap.set('i', '<C-h>', vim.lsp.buf.signature_help, { buffer = args.buf })
-        end
-        if client.server_capabilities.declarationProvider then
-            vim.keymap.set('n', 'dc', vim.lsp.buf.declaration, { buffer = args.buf })
-        end
-        if client.server_capabilities.definitionProvider then
-            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = args.buf })
-        end
-        if client.server_capabilities.typeDefinitionProvider then
-            vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, { buffer = args.buf })
-        end
-        if client.server_capabilities.implementationProvider then
-            vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = args.buf })
-        end
-        if client.server_capabilities.referencesProvider then
-            vim.keymap.set('n', 'dr', vim.lsp.buf.references, { buffer = args.buf })
-        end
-        if client.server_capabilities.renameProvider then
-            vim.keymap.set('n', 'dn', vim.lsp.buf.rename, { buffer = args.buf })
-        end
-        if client.server_capabilities.codeActionProvider then
-            vim.keymap.set('n', '<leader>da', vim.lsp.buf.code_action, { buffer = args.buf })
-        end
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = args.buf, desc = "LSP: Hover" })
+        vim.keymap.set('i', '<C-h>', vim.lsp.buf.signature_help, { buffer = args.buf, desc = "LSP: Signature help" })
+        vim.keymap.set('n', 'gC', vim.lsp.buf.declaration, { buffer = args.buf, desc = "LSP: Go to declaration" })
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = args.buf, desc = "LSP: Go to definition" })
+        vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, { buffer = args.buf, desc = "LSP: Go to type definition" })
+        vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = args.buf, desc = "LSP: Go to implementation" })
+        vim.keymap.set('n', 'dr', vim.lsp.buf.references, { buffer = args.buf, desc = "LSP: Find references" })
+        vim.keymap.set('n', 'dn', vim.lsp.buf.rename, { buffer = args.buf, desc = "LSP: Rename" })
+        vim.keymap.set('n', '<leader>da', vim.lsp.buf.code_action, { buffer = args.buf, desc = "LSP: Code action" })
 
-        vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { buffer = args.buf })
-        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { buffer = args.buf })
-        -- vim.keymap.set("n", "<leader>do", function() vim.diagnostic.open_float() end, opts)
-        vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float, { buffer = args.buf })
+        vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { buffer = args.buf, desc = "LSP: Next diagnostic" })
+        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { buffer = args.buf, desc = "LSP: Previous diagnostic" })
+        vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float,
+            { buffer = args.buf, desc = "LSP: Open diagnostic float" })
+
         vim.api.nvim_create_user_command('Dllist', vim.diagnostic.setloclist, {})
         vim.api.nvim_create_user_command('Dclist', vim.diagnostic.setqflist, {})
     end,
@@ -196,15 +132,36 @@ local function filterReactDTS(value)
     return string.match(value.targetUri, '%.d.ts') == nil
 end
 
+local default_handlers = {}
+local times = 0
+for handler, fallback in pairs(vim.lsp.handlers) do
+    default_handlers[handler] = function(err, result, method, ...)
+        times = times + 1
+        if times < 100 then
+            print(handler)
+            print(vim.inspect(result))
+        end
+
+        fallback(err, result, method, ...)
+
+        -- vim.lsp.handlers[handler] = function(err, result, method, ...)
+        -- vim.notify('hello')
+        -- vim.notify(vim.inspect(result))
+        -- vim.lsp.handlers[handler](err, result, method, ...)
+    end
+end
+
 require("mason").setup()
 require("mason-lspconfig").setup_handlers {
     -- The first entry (without a key) will be the default handler
     -- and will be called for each installed server that doesn't have
     -- a dedicated handler.
-    function(server_name) -- default handler (optional)
+    -- default handler (optional)
+    function(server_name)
         require("lspconfig")[server_name].setup {
             on_attach = on_attach,
-            capabilities = capabilities
+            capabilities = capabilities,
+            handlers = default_handlers
         }
     end,
     -- Next, you can provide a dedicated handler for specific servers.
@@ -217,28 +174,55 @@ require("mason-lspconfig").setup_handlers {
                 "clangd",
                 "--offset-encoding=utf-16",
             },
+            handlers = default_handlers
         }
     end,
     ["jdtls"] = function()
-        lspconfig.jdtls.setup { autostart = false }
+        lspconfig.jdtls.setup {
+            autostart = false,
+            handlers = default_handlers
+        }
         -- pass on configing this plugin, this is triggered when opening java files
     end,
     ["tsserver"] = function()
+        -- for handler, v in pairs(vim.lsp.handlers) do
+        --     vim.notify(handler)
+        --     vim.lsp.handlers[handler] = function(err, result, method, ...)
+        --         vim.notify('hello')
+        --         vim.notify(vim.inspect(result))
+        --         vim.lsp.handlers[handler](err, result, method, ...)
+        --     end
+        -- end
+
         lspconfig.tsserver.setup {
             on_attach = on_attach,
             capabilities = capabilities,
             filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact',
                 'typescript.tsx' },
-            handlers = {
-                ['textDocument/definition'] = function(err, result, method, ...)
-                    if vim.tbl_islist(result) and #result > 1 then
-                        local filtered_result = filter(result, filterReactDTS)
-                        return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
-                    end
-                    vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
-                end
+            -- handlers = {
+                -- ['textDocument/declaration'] = function(err, result, method, ...)
+                -- end,
+                -- ['textDocument/declaration'] = function(err, result, method, ...)
+                --     vim.notify('hello')
+                --     vim.notify(vim.inspect(result))
+                --     vim.lsp.handlers['workspaceSymbol/resolve'](err, result, method, ...)
+                --     -- if vim.tbl_islist(result) and #result > 1 then
+                --     --     local filtered_result = filter(result, filterReactDTS)
+                --     --     return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
+                --     -- end
+                -- end,
+                -- ['textDocument/definition'] = function(err, result, method, ...)
+                --     vim.notify('hello')
+                --     vim.notify(vim.inspect(result))
+                --     if vim.tbl_islist(result) and #result > 1 then
+                --         local filtered_result = filter(result, filterReactDTS)
+                --         return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
+                --     end
+                --     vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
+                -- end
 
-            }
+            handlers = default_handlers
+            -- }
         }
     end,
     ["eslint"] = function()
@@ -247,6 +231,7 @@ require("mason-lspconfig").setup_handlers {
             capabilities = capabilities,
             filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact',
                 'typescript.tsx' },
+            handlers = default_handlers
         }
     end,
     ["lua_ls"] = function()
@@ -267,6 +252,7 @@ require("mason-lspconfig").setup_handlers {
                     },
                 },
             },
+            handlers = default_handlers
         }
     end,
     ["efm"] = function()
@@ -346,7 +332,8 @@ require("mason-lspconfig").setup_handlers {
             settings = {
                 rootMarkers = { ".git/" },
                 languages = languages
-            }
+            },
+            handlers = default_handlers
         }
     end,
 }
@@ -442,6 +429,28 @@ vim.api.nvim_create_autocmd("FileType", {
 pcall(require, 'work.lsp')
 
 lsp.setup()
+
+---gets the lsp of a given server name attached to the current buffer
+---@param server_name string
+---@returns lsp
+function get_lsp(server_name)
+    local bufnr = vim.api.nvim_get_current_buf()
+    local clients = vim.lsp.buf_get_clients(bufnr)
+
+    for client_id, client in pairs(clients) do
+        if client.name == server_name then
+            local params = vim.lsp.util.make_position_params()
+            vim.lsp.buf_request(bufnr, 'textDocument/definition', params, function(err, result, ctx, config)
+                -- if result and vim.tbl_islist(result) and #result > 0 then
+                --   vim.lsp.util.jump_to_location(result[1], client.offset_encoding)
+                -- elseif result then
+                --   vim.lsp.util.jump_to_location(result, client.offset_encoding)
+                -- end
+            end, client_id)
+            return -- Stop after finding the first matching client
+        end
+    end
+end
 
 return {
     on_attach = on_attach
