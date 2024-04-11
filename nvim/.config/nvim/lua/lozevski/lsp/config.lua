@@ -132,24 +132,24 @@ local function filterReactDTS(value)
     return string.match(value.targetUri, '%.d.ts') == nil
 end
 
-local default_handlers = {}
-local times = 0
-for handler, fallback in pairs(vim.lsp.handlers) do
-    default_handlers[handler] = function(err, result, method, ...)
-        times = times + 1
-        if times < 100 then
-            print(handler)
-            print(vim.inspect(result))
-        end
-
-        fallback(err, result, method, ...)
-
-        -- vim.lsp.handlers[handler] = function(err, result, method, ...)
-        -- vim.notify('hello')
-        -- vim.notify(vim.inspect(result))
-        -- vim.lsp.handlers[handler](err, result, method, ...)
-    end
-end
+local default_handlers = vim.lsp.handlers
+-- local times = 0
+-- for handler, fallback in pairs(vim.lsp.handlers) do
+--     default_handlers[handler] = function(err, result, method, ...)
+--         times = times + 1
+--         if times < 100 then
+--             print(handler)
+--             print(vim.inspect(result))
+--         end
+--
+--         fallback(err, result, method, ...)
+--
+--         -- vim.lsp.handlers[handler] = function(err, result, method, ...)
+--         -- vim.notify('hello')
+--         -- vim.notify(vim.inspect(result))
+--         -- vim.lsp.handlers[handler](err, result, method, ...)
+--     end
+-- end
 
 require("mason").setup()
 require("mason-lspconfig").setup_handlers {
