@@ -230,8 +230,8 @@ local opts = {
             elseif luasnip.expand_or_locally_jumpable() then
                 luasnip.expand_or_jump()
             else
-                cmp.confirm({ select = false })
-                -- fallback()
+                -- cmp.confirm({ select = false })
+                fallback()
             end
         -- elseif has_words_before() then
         --     -- try to trigger the completion window for suggestions
