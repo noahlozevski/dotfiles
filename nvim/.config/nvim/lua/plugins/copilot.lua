@@ -33,7 +33,7 @@ return {
                         jump_next = "]]",
                         accept = "<C-y>",
                         -- refresh = "gr",
-                        open = "<M-CR>"
+                        -- open = "<M-CR>"
                     },
                     layout = {
                         position = "bottom", -- | top | left | right
@@ -69,6 +69,22 @@ return {
                 },
                 copilot_node_command = 'node', -- Node.js version must be > 18.x
                 server_opts_overrides = {},
+            })
+        end
+
+        vim.api.nvim_create_user_command('StartCopilot', start_copilot, {})
+
+        -- if the the lua file at lozevski.work is callable, then call the start_copilot function
+        if pcall(require, "work") then
+            -- load work config
+        else
+            -- auto start copilot on insert enter
+            vim.api.nvim_create_autocmd("InsertEnter", {
+                callback = function()
+                    vim.notify("strting copilot")
+                    start_copilot()
+                end,
+                group = vim.api.nvim_create_augroup("start_copilot", { clear = true }),
             })
         end
     end

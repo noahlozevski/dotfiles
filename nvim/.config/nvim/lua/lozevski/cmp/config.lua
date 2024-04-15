@@ -57,14 +57,8 @@ cmp.setup.filetype('gitcommit', {
 
 cmp.setup.cmdline('?', {
     mapping = cmp.mapping.preset.cmdline(),
-    sources = {
-        fuzzy_buffer_conf,
-    }
-})
-
-cmp.setup.cmdline('/', {
     sources = cmp.config.sources({
-        { name = 'nvim_lsp_document_symbol' }
+        { name = 'nvim_lsp_document_symbol' },
     }, {
         { name = "rg" },
         {
@@ -74,6 +68,16 @@ cmp.setup.cmdline('/', {
                 max_matches = 5,
             }
         }
+    })
+})
+
+cmp.setup.cmdline('/', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp_document_symbol' }
+    }, {
+        { name = "rg" },
+        fuzzy_buffer_conf,
     })
 })
 
@@ -103,6 +107,7 @@ local opts = {
                 maxwidth = 50,
                 ellipsis_char = '...',
                 preset = 'default',
+                -- show_labelDetails = true,
             })(entry, vim_item)
 
             local strings = vim.split(kind.kind, "%s", { trimempty = true })
@@ -126,7 +131,7 @@ local opts = {
             end
 
             kind.menu = "    (" .. (lspserver_name) .. ")"
-            return kind
+            return vim_item
         end,
     },
     snippet = {
@@ -137,15 +142,15 @@ local opts = {
     },
     window = {
         completion = cmp.config.window.bordered({
-            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
             col_offset = -3,
             side_padding = 0,
             scrollbar = true,
         }),
-        documentation = {
+        documentation = cmp.config.window.bordered({
             border = border "CmpDocBorder",
             winhighlight = "Normal:CmpDoc",
-        },
+        }),
     },
     sorting = {
         -- -- Need this override for cmp fuzzy buffer
@@ -212,16 +217,16 @@ local opts = {
         -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         ['<CR>'] = cmp.mapping.confirm({ select = false }),
         ["<Tab>"] = cmp.mapping(function(fallback)
-        -- if cmp.visible() then
-        --     -- dont override the tab until we select a completion
-        --     fallback()
-        --     -- -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-        --     -- -- that way you will only jump inside the snippet region
-        -- if luasnip.expand_or_locally_jumpable() then
-        --     luasnip.expand_or_jump()
-        -- else
-        --     fallback()
-        -- end
+            -- if cmp.visible() then
+            --     -- dont override the tab until we select a completion
+            --     fallback()
+            --     -- -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+            --     -- -- that way you will only jump inside the snippet region
+            -- if luasnip.expand_or_locally_jumpable() then
+            --     luasnip.expand_or_jump()
+            -- else
+            --     fallback()
+            -- end
 
             if cmp.visible() and cmp.get_active_entry() then
                 cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
@@ -233,12 +238,12 @@ local opts = {
                 -- cmp.confirm({ select = false })
                 fallback()
             end
-        -- elseif has_words_before() then
-        --     -- try to trigger the completion window for suggestions
-        --     cmp.complete()
-        -- else
-        --     fallback()
-        -- end
+            -- elseif has_words_before() then
+            --     -- try to trigger the completion window for suggestions
+            --     cmp.complete()
+            -- else
+            --     fallback()
+            -- end
         end, { "i", "s" }),
 
         ["<S-Tab>"] = cmp.mapping(function(fallback)
