@@ -50,7 +50,8 @@ local fuzzy_buffer_conf = {
 cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources({
         { name = 'cmp_git' },
-    }, {
+        { name = 'async_path' },
+        { name = "rg" },
         fuzzy_buffer_conf,
     })
 })
