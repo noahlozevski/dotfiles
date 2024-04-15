@@ -75,7 +75,7 @@ return {
         vim.api.nvim_create_user_command('StartCopilot', start_copilot, {})
 
         -- if the the lua file at lozevski.work is callable, then call the start_copilot function
-        if pcall(require, "work") then
+        if vim.g.is_work then
             -- load work config
         else
             -- auto start copilot on insert enter
