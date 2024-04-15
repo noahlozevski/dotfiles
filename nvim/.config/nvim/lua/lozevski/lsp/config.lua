@@ -132,6 +132,7 @@ local function filterReactDTS(value)
     return string.match(value.targetUri, '%.d.ts') == nil
 end
 
+--- warning: dont override this unless necessary to debug
 local default_handlers = vim.lsp.handlers
 -- local times = 0
 -- for handler, fallback in pairs(vim.lsp.handlers) do
@@ -161,7 +162,7 @@ require("mason-lspconfig").setup_handlers {
         require("lspconfig")[server_name].setup {
             on_attach = on_attach,
             capabilities = capabilities,
-            handlers = default_handlers
+            -- handlers = default_handlers
         }
     end,
     -- Next, you can provide a dedicated handler for specific servers.
@@ -174,13 +175,13 @@ require("mason-lspconfig").setup_handlers {
                 "clangd",
                 "--offset-encoding=utf-16",
             },
-            handlers = default_handlers
+            -- handlers = default_handlers
         }
     end,
     ["jdtls"] = function()
         lspconfig.jdtls.setup {
             autostart = false,
-            handlers = default_handlers
+            -- handlers = default_handlers
         }
         -- pass on configing this plugin, this is triggered when opening java files
     end,
@@ -221,7 +222,7 @@ require("mason-lspconfig").setup_handlers {
                 --     vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
                 -- end
 
-            handlers = default_handlers
+            -- handlers = default_handlers
             -- }
         }
     end,
@@ -231,7 +232,7 @@ require("mason-lspconfig").setup_handlers {
             capabilities = capabilities,
             filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact',
                 'typescript.tsx' },
-            handlers = default_handlers
+            -- handlers = default_handlers
         }
     end,
     ["lua_ls"] = function()
@@ -252,7 +253,7 @@ require("mason-lspconfig").setup_handlers {
                     },
                 },
             },
-            handlers = default_handlers
+            -- handlers = default_handlers
         }
     end,
     ["efm"] = function()
@@ -333,7 +334,7 @@ require("mason-lspconfig").setup_handlers {
                 rootMarkers = { ".git/" },
                 languages = languages
             },
-            handlers = default_handlers
+            -- handlers = default_handlers
         }
     end,
 }
