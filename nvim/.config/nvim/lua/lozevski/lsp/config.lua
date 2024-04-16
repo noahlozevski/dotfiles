@@ -280,6 +280,8 @@ require("mason-lspconfig").setup_handlers {
             ["javascript.jsx"] = servers,
             javascriptreact = servers,
             json = servers,
+            markdown = servers,
+            html = servers,
         })
 
         -- need to remove the stupid defaults efm adds on top of prettier that conflict with the settings defined in repo-specific prettier configs
