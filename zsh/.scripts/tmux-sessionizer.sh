@@ -1,20 +1,26 @@
 #!/bin/zsh
 
 # use the default code dir if not set already
-DEFAULT_CODE_DIR=${CODE_DIR:-/Users/noahlozevski/code}
+DEFAULT_CODE_DIR="/Users/noahlozevski/code"
+
+# Override if CODE_DIR is set and not empty
+if [ -n "$CODE_DIR" ]; then
+  DEFAULT_CODE_DIR="$CODE_DIR"
+fi
 
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    running_sessions=$(tmux list-sessions -F "#{session_name}" 2> /dev/null)
-    workplaces=$(find $DEFAULT_CODE_DIR -mindepth 1 -maxdepth 1 -type d ! -name '.*')
+    running_sessions=$(tmux list-sessions -F "#{session_name}" 2> /dev/null | sort | uniq)
+    workplaces=$(find $DEFAULT_CODE_DIR -mindepth 1 -maxdepth 1 -type d ! -name '.*' | sort | uniq)
     # start a fuzzy find search on all workspace folders
-    selected=$({ echo $running_sessions && echo $workplaces } | sort --reverse | uniq | fzf)
+    selected=$({ echo $running_sessions && echo $workplaces } | uniq | fzf --header="Select a session or workspace:")
 fi
 
 if [[ -z $selected ]]; then
     exit 0
 fi
+
 
 selected_name=$(basename "$selected" | tr . _)
 tmux_running=$(pgrep tmux)
@@ -30,6 +36,7 @@ fi
 
 if [[ -z $TMUX ]]; then
     tmux attach-session -t $selected_name
-else
+else 
     tmux switch-client -t $selected_name
 fi
+tmux switch-client -t $selected_name
