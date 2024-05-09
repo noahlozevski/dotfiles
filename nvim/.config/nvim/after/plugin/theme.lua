@@ -116,36 +116,22 @@ M.startRosePine = function()
         variant = 'moon',
         --- @usage 'main'|'moon'|'dawn'
         dark_variant = 'moon',
-        bold_vert_split = false,
-        dim_nc_background = false,
-        disable_background = true,
-        disable_float_background = true,
-        disable_italics = true,
-        --- @usage string hex value or named color from rosepinetheme.com/palette
-        groups = {
-            -- background = 'base',
-            -- background_nc = '_experimental_nc',
-            -- panel = 'surface',
-            -- panel_nc = 'base',
-            -- border = 'highlight_med',
-            -- comment = 'muted',
-            -- link = 'iris',
-            -- punctuation = 'subtle',
-            -- error = 'love',
-            -- hint = 'iris',
-            -- info = 'foam',
-            -- warn = 'gold',
-            -- headings = {
-            --     h1 = 'iris',
-            --     h2 = 'foam',
-            --     h3 = 'rose',
-            --     h4 = 'gold',
-            --     h5 = 'pine',
-            --     h6 = 'foam',
-            -- }
-            -- -- or set all headings at once
-            -- -- headings = 'subtle'
+
+        dim_inactive_windows = false,
+        extend_background_behind_borders = true,
+
+        enable = {
+            terminal = true,
+            legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
+            migrations = true,        -- Handle deprecated options automatically
         },
+
+        styles = {
+            bold = true,
+            italic = true,
+            transparency = true,
+        },
+
         -- Change specific vim highlight groups
         -- https://github.com/rose-pine/neovim/wiki/Recipes
         highlight_groups = {
