@@ -259,13 +259,13 @@ local opts = {
         end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
-        { name = 'luasnip',                  },
         { name = 'nvim_lsp',                 },
         { name = 'nvim_lua',                 },
         { name = 'nvim_lsp_signature_help',  },
         { name = 'path',                     },
         { name = "rg",     keyword_length = 4, },
         fuzzy_buffer_conf,
+        { name = 'luasnip',                  },
     })
 }
 

@@ -201,26 +201,26 @@ require("mason-lspconfig").setup_handlers {
             filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact',
                 'typescript.tsx' },
             -- handlers = {
-                -- ['textDocument/declaration'] = function(err, result, method, ...)
-                -- end,
-                -- ['textDocument/declaration'] = function(err, result, method, ...)
-                --     vim.notify('hello')
-                --     vim.notify(vim.inspect(result))
-                --     vim.lsp.handlers['workspaceSymbol/resolve'](err, result, method, ...)
-                --     -- if vim.tbl_islist(result) and #result > 1 then
-                --     --     local filtered_result = filter(result, filterReactDTS)
-                --     --     return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
-                --     -- end
-                -- end,
-                -- ['textDocument/definition'] = function(err, result, method, ...)
-                --     vim.notify('hello')
-                --     vim.notify(vim.inspect(result))
-                --     if vim.tbl_islist(result) and #result > 1 then
-                --         local filtered_result = filter(result, filterReactDTS)
-                --         return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
-                --     end
-                --     vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
-                -- end
+            -- ['textDocument/declaration'] = function(err, result, method, ...)
+            -- end,
+            -- ['textDocument/declaration'] = function(err, result, method, ...)
+            --     vim.notify('hello')
+            --     vim.notify(vim.inspect(result))
+            --     vim.lsp.handlers['workspaceSymbol/resolve'](err, result, method, ...)
+            --     -- if vim.tbl_islist(result) and #result > 1 then
+            --     --     local filtered_result = filter(result, filterReactDTS)
+            --     --     return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
+            --     -- end
+            -- end,
+            -- ['textDocument/definition'] = function(err, result, method, ...)
+            --     vim.notify('hello')
+            --     vim.notify(vim.inspect(result))
+            --     if vim.tbl_islist(result) and #result > 1 then
+            --         local filtered_result = filter(result, filterReactDTS)
+            --         return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
+            --     end
+            --     vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
+            -- end
 
             -- handlers = default_handlers
             -- }
@@ -234,6 +234,33 @@ require("mason-lspconfig").setup_handlers {
                 'typescript.tsx' },
             -- handlers = default_handlers
         }
+    end,
+    -- zig config
+    ["zls"] = function()
+        local zig_config = {
+            on_attach = on_attach,
+            capabilities = capabilities,
+        }
+
+        -- overrides for zvm
+        local zvm_dir = vim.env.HOME .. '/.zvm'
+        if vim.fn.isdirectory(zvm_dir) then
+            zig_config = vim.tbl_extend('force', zig_config, {
+                cmd = {
+                    -- join the home path with /.zvm
+                    zvm_dir .. '/bin/zls',
+                },
+                settings = {
+                    zig_lib_path = zvm_dir .. '/master/lib',
+                    zig_exe_path = zvm_dir .. '/bin/zig',
+                    -- build_runner_path = '/Users/noahlozevski/Library/Caches/zls/build_runner_0.12.0.zig',
+                    -- global_cache_path = '/Users/noahlozevski/Library/Caches/zls',
+                    -- build_runner_global_cache_path = '/Users/noahlozevski/.cache/zig',
+                }
+            })
+        end
+
+        lspconfig.zls.setup(zig_config)
     end,
     ["lua_ls"] = function()
         -- Fixes the undefined vim global annoyance
