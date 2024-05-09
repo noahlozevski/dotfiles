@@ -32,7 +32,7 @@ return {
                 -- print the url after performing the action
                 print_url = true,
             },
-            callbacks = vim.tbl_extend('force', callbacks, work_gitlinker.callbacks),
+            callbacks = vim.tbl_deep_extend('force', callbacks, work_gitlinker.callbacks),
             -- default mapping to call url generation with action_callback
             mappings = nil
             -- mappings = "<leader>gy"

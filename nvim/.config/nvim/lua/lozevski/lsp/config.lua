@@ -240,15 +240,19 @@ require("mason-lspconfig").setup_handlers {
         local zig_config = {
             on_attach = on_attach,
             capabilities = capabilities,
+            settings = {
+                enable_autofix = false,
+                enable_build_on_save = false
+            }
         }
 
         -- overrides for zvm
         local zvm_dir = vim.env.HOME .. '/.zvm'
         if vim.fn.isdirectory(zvm_dir) then
-            zig_config = vim.tbl_extend('force', zig_config, {
+            zig_config = vim.tbl_deep_extend('force', zig_config, {
                 cmd = {
                     -- join the home path with /.zvm
-                    zvm_dir .. '/bin/zls',
+                    zvm_dir .. '/bin/zls'
                 },
                 settings = {
                     zig_lib_path = zvm_dir .. '/master/lib',
