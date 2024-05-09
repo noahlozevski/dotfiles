@@ -37,20 +37,20 @@ return {
                 additional_vim_regex_highlighting = false,
             },
 
+
             -- incremental selection, is this better than the text object one????
             incremental_selection = {
                 enable = true,
-                keymaps = {
-                    -- init_selection = '<CR>',
-                    -- scope_incremental = '<CR>',
-                    -- node_incremental = '<TAB>',
-                    -- node_decremental = '<S-TAB>',
-
-                    unit_selection = 'gnn',
-                    node_incremental = 'grn',
-                    scope_incremental = 'grc',
-                    node_decremental = 'grm',
-                },
+                -- keymaps = {
+                --     -- init_selection = '<CR>',
+                --     -- scope_incremental = '<CR>',
+                --     -- node_incremental = '<TAB>',
+                --     -- node_decremental = '<S-TAB>',
+                --     unit_selection = 'gnn',
+                --     node_incremental = 'grn',
+                --     scope_incremental = 'grc',
+                --     node_decremental = 'grm',
+                -- },
             },
 
             -- -- uses comment string from language grammar
