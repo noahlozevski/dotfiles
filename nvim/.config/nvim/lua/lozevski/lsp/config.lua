@@ -237,11 +237,15 @@ require("mason-lspconfig").setup_handlers {
     end,
     -- zig config
     ["zls"] = function()
+        local auto_format_on_save = false
+        -- this is brought in by the vim-zig plugin dependency from the zig lsp
+        vim.g.zig_fmt_autosave = auto_format_on_save
+
         local zig_config = {
             on_attach = on_attach,
             capabilities = capabilities,
             settings = {
-                enable_autofix = false,
+                enable_autofix = auto_format_on_save,
                 enable_build_on_save = false
             }
         }
