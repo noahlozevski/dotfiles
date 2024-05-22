@@ -152,6 +152,11 @@ local default_handlers = vim.lsp.handlers
 --     end
 -- end
 
+-- sql brings in some whacky commands
+-- this disables this
+-- search for sql.vim in :scriptnames
+vim.g.omni_sql_no_default_maps = false
+
 require("mason").setup()
 require("mason-lspconfig").setup_handlers {
     -- The first entry (without a key) will be the default handler
