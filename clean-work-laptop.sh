@@ -9,12 +9,12 @@ npm cache clean --force --verbose
 brew cleanup --prune=all --verbose
 brazil-package-cache stop
 echo -n "Cleaning pkg cache ..." && brazil-package-cache clean --debug --days 0 --keepCacheHours 0 --percent 0 2>/dev/null
-rm -frv /local/home/thomadan/brazil-pkg-cache/s3BinaryFiles/*
+# rm -frv /local/home/${USER}/brazil-pkg-cache/s3BinaryFiles/*
 echo -n "Cleaning toolbox ..." && toolbox clean 2>&1
 
 # delete things from the ~/Library directory if over a size
 # MB
-threshold_size=500
+threshold_size=2000
 
 # Path where to search directories. Change this to the path where you want to search.
 search_path="$HOME/Library/Caches"
