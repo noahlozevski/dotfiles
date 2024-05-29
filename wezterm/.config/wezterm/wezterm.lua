@@ -13,9 +13,11 @@ config.keys = {
 }
 
 config.font_size = 20
-config.font = wezterm.font('JetBrains Mono', {
+config.font = wezterm.font({
+    family = 'JetBrains Mono',
     -- weight = 'Bold',
-    -- italic = true
+    -- italic = true,
+    harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
 })
 config.color_scheme = "rose-pine-moon"
 config.background = {
@@ -28,5 +30,6 @@ config.background = {
         hsb = { brightness = 0.025 },
     },
 }
+
 
 return config
