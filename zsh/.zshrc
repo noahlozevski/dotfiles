@@ -166,12 +166,6 @@ source "$HOME/.cargo/env"
 
 # accept suggestion for zsh-autosuggestions
 bindkey '^ ' autosuggest-accept
-
-rtx_activate() {
-    # rtx
-    eval "$(~/bin/rtx activate zsh)"
-}
-
 # android libs
 export PATH=$PATH:/Users/${USER}/Library/Android/sdk/platform-tools/
 
@@ -197,7 +191,6 @@ export PATH="$HOME/.jenv/bin:$PATH"
 export ANDROID_HOME=/Users/$USER/Library/Android/sdk
 eval "$(jenv init -)"
 
-rtx_activate
 resource() {
     source ~/.zshrc
 }

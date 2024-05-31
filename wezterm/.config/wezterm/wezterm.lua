@@ -23,7 +23,7 @@ config.color_scheme = "rose-pine-moon"
 config.background = {
     {
         source = {
-            File = '/Users/nlozevsk/dotfiles/backgrounds/eagle-background.png',
+            File = wezterm.home_dir .. '/dotfiles/backgrounds/eagle-background.png',
         },
         repeat_x = 'NoRepeat',
         repeat_y = 'NoRepeat',
