@@ -20,6 +20,7 @@ config.font = wezterm.font({
     harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
 })
 config.color_scheme = "rose-pine-moon"
+local brightnessInverse = 30
 config.background = {
     {
         source = {
@@ -27,7 +28,7 @@ config.background = {
         },
         repeat_x = 'NoRepeat',
         repeat_y = 'NoRepeat',
-        hsb = { brightness = 0.025 },
+        hsb = { brightness = 1 / brightnessInverse },
     },
 }
 
