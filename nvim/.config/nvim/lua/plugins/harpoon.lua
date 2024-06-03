@@ -28,9 +28,6 @@ local v2 = function()
     vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
 end
 
-
-
-
 return {
     'ThePrimeagen/harpoon',
     branch = "harpoon2",
