@@ -3,7 +3,7 @@ local v2 = function()
 
     harpoon:setup({
         settings = {
-            save_on_toggle = false,
+            save_on_toggle = true,
             sync_on_ui_close = true,
             key = function()
                 return vim.loop.cwd()
