@@ -33,21 +33,10 @@ return {
     'folke/tokyonight.nvim',
     'ray-x/aurora',
     'rafamadriz/neon',
-    {
-        "catppuccin/nvim",
-        name = "catppuccin"
-    },
+    { "catppuccin/nvim", name = "catppuccin" },
     'nyoom-engineering/oxocarbon.nvim',
-    {
-        'projekt0n/github-nvim-theme',
-    },
-    {
-        'rebelot/kanagawa.nvim'
-    },
-    {
-        'airblade/vim-gitgutter',
-        dependencies = {
-            'tpope/vim-fugitive'
-        }
-    }
+    { 'projekt0n/github-nvim-theme', },
+    { 'rebelot/kanagawa.nvim' },
+
+    { 'airblade/vim-gitgutter', dependencies = { 'tpope/vim-fugitive' } }
 }
