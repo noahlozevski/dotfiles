@@ -1,7 +1,19 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
-config.enable_tab_bar = false
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
+
+config.enable_tab_bar = false
+wezterm.on("toggle-tabbar", function(window, _)
+    local overrides = window:get_config_overrides() or {}
+    if overrides.enable_tab_bar == false then
+        wezterm.log_info("tab bar shown")
+        overrides.enable_tab_bar = true
+    else
+        wezterm.log_info("tab bar hidden")
+        overrides.enable_tab_bar = false
+    end
+    window:set_config_overrides(overrides)
+end)
 
 local action = wezterm.action
 config.keys = {
@@ -10,6 +22,11 @@ config.keys = {
         mods = 'CMD',
         action = action.ToggleFullScreen,
     },
+    {
+        key = 'e',
+        mods = 'CMD|SHIFT',
+        action = action.EmitEvent("toggle-tabbar"),
+    }
 }
 
 config.font_size = 20

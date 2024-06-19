@@ -14,7 +14,7 @@ echo -n "Cleaning toolbox ..." && toolbox clean 2>&1
 
 # delete things from the ~/Library directory if over a size
 # MB
-threshold_size=2000
+threshold_size=2500
 
 # Path where to search directories. Change this to the path where you want to search.
 search_path="$HOME/Library/Caches"
