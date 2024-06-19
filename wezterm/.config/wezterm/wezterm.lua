@@ -37,11 +37,11 @@ config.font = wezterm.font({
     harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
 })
 config.color_scheme = "rose-pine-moon"
-local brightnessInverse = 30
+local brightnessInverse = 25
 config.background = {
     {
         source = {
-            File = wezterm.home_dir .. '/dotfiles/backgrounds/eagle-background.png',
+            File = wezterm.home_dir .. '/dotfiles/backgrounds/waifu.png',
         },
         repeat_x = 'NoRepeat',
         repeat_y = 'NoRepeat',
