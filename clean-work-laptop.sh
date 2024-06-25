@@ -1,5 +1,5 @@
 # rm -rf /usr/local/amazon/var/acme/cache/
-rm -rfv /Users/nlozevsk/Library/Application\ Support/Slack/logs/
+rm -rfv $HOME/Library/Application\ Support/Slack/logs/
 rm -rfv $HOME/.gradle/caches/
 rm -rfv ~/Library/Developer/Xcode/DerivedData/*
 rm -rfv ~/Library/Developer/CoreSimulator/Caches/*
