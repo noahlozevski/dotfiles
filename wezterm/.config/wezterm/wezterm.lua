@@ -26,7 +26,17 @@ config.keys = {
         key = 'e',
         mods = 'CMD|SHIFT',
         action = action.EmitEvent("toggle-tabbar"),
-    }
+    },
+    {
+        key = 'd',
+        mods = 'CMD',
+        action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
+    },
+    {
+        key = 'd',
+        mods = 'CMD|SHIFT',
+        action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
+    },
 }
 
 config.font_size = 20

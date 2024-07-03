@@ -1,1 +1,2 @@
 set number relativenumber
+nmap gi :action GotoImplementation<CR>
