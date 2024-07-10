@@ -1,2 +1,47 @@
 set number relativenumber
 nmap gi :action GotoImplementation<CR>
+
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set hlsearch
+set incsearch
+let mapleader = " "
+let maplocalleader = " "
+
+" Move selected line(s) down/up in visual mode
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" Join lines and maintain cursor position
+nnoremap J mzJ`z
+
+" Scroll half-page down/up and center
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+
+" Next/Previous search result and center
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" Paste without overwriting the register with the selected text
+xnoremap <leader>p "_dP
+
+" Make regualr yank and delete commands use the system clipboard
+nnoremap y "+y
+
+" Delete and skip register
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+
+" Align control + c to esc
+inoremap <C-c> <Esc>
+
+" Format code for intellij
+nnoremap <leader>f :action(ReformatCode)<CR>
+xnoremap <leader>f :action(ReformatCode)<CR>
+
+" Substitute all occurrences of current word
+nnoremap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>

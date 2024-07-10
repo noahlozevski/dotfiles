@@ -34,7 +34,7 @@ vim.opt.scrolloff = 8
 -- vim.opt.signcolumn = "auto"
 vim.opt.isfname:append("@-@")
 
-vim.opt.updatetime = 250
+vim.opt.updatetime = 40
 
 vim.opt.colorcolumn = "80"
 
@@ -50,7 +50,7 @@ vim.opt.splitright = true         -- Vertical split to the right
 vim.opt.splitbelow = true         -- Horizontal split to the bottom
 vim.opt.smartcase = true          -- Ignore lowercase for the whole pattern
 vim.opt.hidden = true             -- Enable background buffers
-vim.opt.history = 100             -- Remember N lines in history
+vim.opt.history = 250             -- Remember N lines in history
 vim.opt.lazyredraw = true         -- Faster scrolling
 vim.opt.synmaxcol = 240           -- Max column for syntax highlight
 
