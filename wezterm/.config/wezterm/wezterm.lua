@@ -39,6 +39,10 @@ config.keys = {
     },
 }
 
+config.window_background_opacity = 0.95
+config.macos_window_background_blur = 15
+config.window_decorations = "RESIZE"
+
 config.font_size = 20
 config.font = wezterm.font({
     family = 'JetBrains Mono',
@@ -47,6 +51,7 @@ config.font = wezterm.font({
     harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
 })
 config.color_scheme = "rose-pine-moon"
+
 local brightnessInverse = 25
 config.background = {
     {
@@ -56,8 +61,8 @@ config.background = {
         repeat_x = 'NoRepeat',
         repeat_y = 'NoRepeat',
         hsb = { brightness = 1 / brightnessInverse },
+        opacity = 0.80,
     },
 }
-
 
 return config
