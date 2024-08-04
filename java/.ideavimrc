@@ -61,5 +61,12 @@ map Y y$
 
 " IDEA specific
 nmap <leader>f  :action ReformatCode<CR>
+nmap <leader>a  :action HarpoonerAddFile<CR>
+nmap <C-e>  :action HarpoonerQuickMenu<CR>
+nmap <C-h>  :action HarpoonerOpenFile0<CR>
+nmap <C-j>  :action HarpoonerOpenFile1<CR>
+nmap <C-k>  :action HarpoonerOpenFile2<CR>
+nmap <C-l>  :action HarpoonerOpenFile3<CR>
+nmap <C-;>  :action HarpoonerOpenFile4<CR>
 
 
