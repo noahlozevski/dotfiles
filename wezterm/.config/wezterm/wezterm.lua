@@ -15,21 +15,12 @@ wezterm.on("toggle-tabbar", function(window, _)
     window:set_config_overrides(overrides)
 end)
 
+
 local background_blur = 15
-wezterm.on("toggle-blur", function(window, _)
-    local overrides = window:get_config_overrides() or {}
-    if overrides.macos_window_background_blur == 0 then
-        overrides.macos_window_background_blur = background_blur
-    else
-        overrides.macos_window_background_blur = 0
-    end
-    window:set_config_overrides(overrides)
-end)
-
-
 local brightnessInverse = 25
-local get_background = function(state)
-    return {
+local opacity_state = false
+local function get_background()
+    local base_config = {
         {
             source = {
                 File = wezterm.home_dir .. '/dotfiles/backgrounds/waifu.png',
@@ -37,23 +28,35 @@ local get_background = function(state)
             repeat_x = 'NoRepeat',
             repeat_y = 'NoRepeat',
             hsb = { brightness = 1 / brightnessInverse },
-            opacity = state and 0.95 or 0.80,
+            opacity = opacity_state and 0.95 or 0.80,
         },
     }
+    return base_config
 end
 
-local opacity_state = false
-wezterm.on("toggle-opacity", function(window, _)
+local function refresh(window)
     local overrides = window:get_config_overrides() or {}
+    overrides.background = get_background()
+    overrides.macos_window_background_blur = background_blur
+    window:set_config_overrides(overrides)
+end
+
+wezterm.on("toggle-opacity", function(window, _)
     if opacity_state == true then
         opacity_state = false
-        overrides.background = get_background(opacity_state)
     else
         opacity_state = true
-        overrides.background = get_background(opacity_state)
     end
+    refresh(window)
+end)
 
-    window:set_config_overrides(overrides)
+wezterm.on("toggle-blur", function(window, _)
+    if background_blur == 0 then
+        background_blur = 15
+    else
+        background_blur = 0
+    end
+    refresh(window)
 end)
 
 local action = wezterm.action
@@ -93,7 +96,7 @@ config.keys = {
 config.window_background_opacity = 0.95
 config.macos_window_background_blur = background_blur
 config.window_decorations = "RESIZE"
-config.background = get_background(opacity_state)
+config.background = get_background()
 
 config.font_size = 20
 config.font = wezterm.font({
