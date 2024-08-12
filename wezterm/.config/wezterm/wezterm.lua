@@ -16,9 +16,24 @@ wezterm.on("toggle-tabbar", function(window, _)
 end)
 
 
-local background_blur = 15
 local brightnessInverse = 25
-local opacity_state = false
+
+local background_blur = 1
+local blur_states = {
+    { background_blur = 15 },
+    { background_blur = 25 },
+    { background_blur = 0 },
+    { background_blur = 5 },
+}
+
+local opacity_state = 1
+local opacity_states = {
+    { opacity = 0.70 },
+    { opacity = 0.80 },
+    { opacity = 0.95 },
+    { opacity = 0.60 },
+}
+
 local function get_background()
     local base_config = {
         {
@@ -28,7 +43,7 @@ local function get_background()
             repeat_x = 'NoRepeat',
             repeat_y = 'NoRepeat',
             hsb = { brightness = 1 / brightnessInverse },
-            opacity = opacity_state and 0.95 or 0.80,
+            opacity = opacity_states[opacity_state].opacity
         },
     }
     return base_config
@@ -37,24 +52,22 @@ end
 local function refresh(window)
     local overrides = window:get_config_overrides() or {}
     overrides.background = get_background()
-    overrides.macos_window_background_blur = background_blur
+    overrides.macos_window_background_blur = blur_states[background_blur].background_blur
     window:set_config_overrides(overrides)
 end
 
 wezterm.on("toggle-opacity", function(window, _)
-    if opacity_state == true then
-        opacity_state = false
-    else
-        opacity_state = true
+    opacity_state = opacity_state + 1
+    if opacity_state > #opacity_states then
+        opacity_state = 1
     end
     refresh(window)
 end)
 
 wezterm.on("toggle-blur", function(window, _)
-    if background_blur == 0 then
-        background_blur = 15
-    else
-        background_blur = 0
+    background_blur = background_blur + 1
+    if background_blur > #blur_states then
+        background_blur = 1
     end
     refresh(window)
 end)
