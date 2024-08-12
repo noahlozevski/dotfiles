@@ -105,9 +105,10 @@ alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
 
-alt-w = 'workspace W' # w for wezterm, easy combo to type
-alt-m = 'workspace M'
-alt-a = 'workspace A' # a for arc, easy to type
+alt-w = 'workspace W' # w for wezterm
+alt-m = 'workspace M' # m for messaging
+alt-b = 'workspace B' # b for browser
+alt-i = 'workspace I' # i for ide
 alt-s = 'workspace S'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
@@ -123,7 +124,8 @@ alt-shift-9 = 'move-node-to-workspace 9'
 
 alt-shift-w = 'move-node-to-workspace W'
 alt-shift-m = 'move-node-to-workspace M'
-alt-shift-a = 'move-node-to-workspace A'
+alt-shift-b = 'move-node-to-workspace B'
+alt-shift-i = 'move-node-to-workspace I'
 alt-shift-s = 'move-node-to-workspace S'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
@@ -191,14 +193,14 @@ run = 'move-node-to-workspace M'
 
 [[on-window-detected]]
 if.app-id = 'company.thebrowser.Browser'
-run = 'move-node-to-workspace A'
+run = 'move-node-to-workspace B'
 
 [workspace-to-monitor-force-assignment]
 W = ['lg', 'main']
-I = ['lg', 'main']
 M = ['u28d590', 'samsung', 'main']
-A = ['lg', 'main']
+B = ['lg', 'main']
 S = ['u28d590', 'samsung', 'main']
+I = ['lg', 'main']
 
 
 # 2 = 'main'                      # Main monitor
