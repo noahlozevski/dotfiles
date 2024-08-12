@@ -21,9 +21,9 @@ local brightnessInverse = 25
 local background_blur = 1
 local blur_states = {
     { background_blur = 15 },
-    { background_blur = 25 },
-    { background_blur = 0 },
     { background_blur = 5 },
+    { background_blur = 0 },
+    { background_blur = 25 },
 }
 
 local opacity_state = 1
@@ -107,7 +107,7 @@ config.keys = {
 }
 
 config.window_background_opacity = 0.95
-config.macos_window_background_blur = background_blur
+config.macos_window_background_blur = blur_states[background_blur].background_blur
 config.window_decorations = "RESIZE"
 config.background = get_background()
 
