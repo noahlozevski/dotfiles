@@ -107,7 +107,7 @@ alt-9 = 'workspace 9'
 
 alt-t = 'workspace T' # t for terminal
 alt-m = 'workspace M' # m for messaging
-alt-b = 'workspace B' # b for browser
+# alt-a = 'workspace A' # a for arc
 alt-i = 'workspace I' # i for ide
 alt-s = 'workspace S'
 
@@ -124,7 +124,7 @@ alt-shift-9 = 'move-node-to-workspace 9'
 
 alt-shift-t = 'move-node-to-workspace T'
 alt-shift-m = 'move-node-to-workspace M'
-alt-shift-b = 'move-node-to-workspace B'
+# alt-shift-b = 'move-node-to-workspace B'
 alt-shift-i = 'move-node-to-workspace I'
 alt-shift-s = 'move-node-to-workspace S'
 
@@ -191,11 +191,9 @@ run = 'move-node-to-workspace T'
 [[on-window-detected]]
 if.app-id = 'com.apple.dt.Xcode'
 run = 'move-node-to-workspace I'
-
 [[on-window-detected]]
 if.app-id = 'com.jetbrains.intellij'
 run = 'move-node-to-workspace I'
-
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCodeInsiders'
 run = 'move-node-to-workspace I'
@@ -204,31 +202,26 @@ run = 'move-node-to-workspace I'
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
 run = 'move-node-to-workspace M'
-
 [[on-window-detected]]
 if.app-id = 'com.microsoft.Outlook'
 run = 'move-node-to-workspace M'
-
 [[on-window-detected]]
 if.app-id = 'com.apple.MobileSMS'
 run = 'move-node-to-workspace M'
 
-# browsers
-[[on-window-detected]]
-if.app-id = 'company.thebrowser.Browser'
-run = 'move-node-to-workspace B'
-
-[[on-window-detected]]
-if.app-id = 'com.google.Chrome'
-run = 'move-node-to-workspace B'
-
-[[on-window-detected]]
-if.app-id = 'org.mozilla.firefox'
-run = 'move-node-to-workspace B'
-
-[[on-window-detected]]
-if.app-id = 'com.apple.Safari'
-run = 'move-node-to-workspace B'
+# # browsers
+# [[on-window-detected]]
+# if.app-id = 'company.thebrowser.Browser'
+# run = 'move-node-to-workspace B'
+# [[on-window-detected]]
+# if.app-id = 'com.google.Chrome'
+# run = 'move-node-to-workspace B'
+# [[on-window-detected]]
+# if.app-id = 'org.mozilla.firefox'
+# run = 'move-node-to-workspace B'
+# [[on-window-detected]]
+# if.app-id = 'com.apple.Safari'
+# run = 'move-node-to-workspace B'
 
 [workspace-to-monitor-force-assignment]
 T = ['lg', 'main']
@@ -242,4 +235,4 @@ I = ['lg', 'main']
 # 3 = 'secondary'                 # Non-main monitor in case when there are only two monitors
 # 4 = 'built-in'                  # Case insensitive regex substring
 # 5 = '^built-in retina display$' # Case insensitive regex match
-# 6 = ['lg', 'dell']
+# 7 = ['lg', 'dell']
