@@ -56,7 +56,7 @@ cmp.setup.filetype('gitcommit', {
     })
 })
 
-cmp.setup.cmdline('?', {
+cmp.setup.cmdline({ '?', '/' }, {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
         { name = 'nvim_lsp_document_symbol' },
@@ -69,16 +69,6 @@ cmp.setup.cmdline('?', {
                 max_matches = 5,
             }
         }
-    })
-})
-
-cmp.setup.cmdline('/', {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp_document_symbol' }
-    }, {
-        { name = "rg" },
-        fuzzy_buffer_conf,
     })
 })
 
@@ -169,17 +159,18 @@ local opts = {
         --     compare.length,
         --     compare.order,
         -- }
-        priority_weight = 2,
+        priority_weight = 1,
         comparators = {
-            require('cmp_fuzzy_buffer.compare'),
-            compare.offset,
-            compare.exact,
             compare.score,
-            compare.recently_used,
-            compare.kind,
-            compare.sort_text,
-            compare.length,
-            compare.order,
+            -- compare.exact,
+            -- compare.offset,
+            -- require('cmp_fuzzy_buffer.compare'),
+            -- compare.score,
+            -- compare.kind,
+            -- compare.recently_used,
+            -- compare.sort_text,
+            -- compare.length,
+            -- compare.order,
         }
     },
     mapping = cmp.mapping.preset.insert({
@@ -259,13 +250,13 @@ local opts = {
         end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
-        { name = 'nvim_lsp',                 },
-        { name = 'nvim_lua',                 },
-        { name = 'nvim_lsp_signature_help',  },
-        { name = 'path',                     },
-        { name = "rg",     keyword_length = 4, },
+        { name = 'nvim_lsp', },
+        { name = 'nvim_lua', },
+        { name = 'nvim_lsp_signature_help', },
+        { name = 'path', },
+        { name = "rg",                      keyword_length = 4, },
         fuzzy_buffer_conf,
-        { name = 'luasnip',                  },
+        { name = 'luasnip', },
     })
 }
 

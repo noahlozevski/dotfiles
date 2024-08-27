@@ -1,9 +1,13 @@
 return {
     "nvim-neo-tree/neo-tree.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" },
+    dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-tree/nvim-web-devicons",
+        "MunifTanjim/nui.nvim"
+    },
+    cmd = "Neotree", -- Lazy-load the plugin when the "Neotree" command is used
     keys = {
         { "\\", "<cmd>Neotree toggle<cr>", desc = "NeoTree" },
-
     },
     config = function()
         -- Unless you are still migrating, remove the deprecated commands from v1.x
@@ -151,7 +155,7 @@ return {
                     --    show_path = "none" -- "none", "relative", "absolute"
                     --  }
                     --}
-                    ["m"] = "move",         -- takes text input for destination, also accepts the optional config.show_path option like "add".
+                    ["m"] = "move", -- takes text input for destination, also accepts the optional config.show_path option like "add".
                     -- ["q"] = "close_window",
                     ["R"] = "refresh",
                     ["?"] = "show_help",
@@ -162,18 +166,18 @@ return {
             nesting_rules = {},
             filesystem = {
                 filtered_items = {
-                    visible = true,         -- when true, they will just be displayed differently than normal items
+                    visible = true, -- when true, they will just be displayed differently than normal items
                     hide_dotfiles = true,
                     hide_gitignored = true,
-                    hide_hidden = true,         -- only works on Windows for hidden files/directories
+                    hide_hidden = true, -- only works on Windows for hidden files/directories
                     hide_by_name = {
                         --"node_modules"
                     },
-                    hide_by_pattern = {         -- uses glob style patterns
+                    hide_by_pattern = { -- uses glob style patterns
                         --"*.meta",
                         --"*/src/*/tsconfig.json",
                     },
-                    always_show = {     -- remains visible even if other settings would normally hide it
+                    always_show = { -- remains visible even if other settings would normally hide it
                         --".gitignored",
                     },
                     never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
@@ -184,9 +188,9 @@ return {
                         --".null-ls_*",
                     },
                 },
-                follow_current_file = true,     -- This will find and focus the file in the active buffer every
+                follow_current_file = true,             -- This will find and focus the file in the active buffer every
                 -- time the current file is changed while the tree is open.
-                group_empty_dirs = false,       -- when true, empty folders will be grouped together
+                group_empty_dirs = false,               -- when true, empty folders will be grouped together
                 hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
                 -- in whatever position is specified in window.position
                 -- "open_current",  -- netrw disabled, opening a directory opens within the
@@ -220,7 +224,7 @@ return {
             buffers = {
                 follow_current_file = true, -- This will find and focus the file in the active buffer every
                 -- time the current file is changed while the tree is open.
-                group_empty_dirs = true, -- when true, empty folders will be grouped together
+                group_empty_dirs = true,    -- when true, empty folders will be grouped together
                 show_unloaded = true,
                 window = {
                     mappings = {
@@ -234,7 +238,7 @@ return {
                 window = {
                     position = "float",
                     mappings = {
-                        ["A"]  = "git_add_all",
+                        ["A"] = "git_add_all",
                         ["u"] = "git_unstage_file",
                         ["s"] = "git_add_file",
                         ["X"] = "git_revert_file",
@@ -246,9 +250,5 @@ return {
             }
         })
         vim.cmd([[nnoremap \ :Neotree focus toggle<cr>]])
-
-        -- -- Opens and focuses neotree or closes it
-        --
-        -- vim.cmd("NeoTreeClose")
     end,
 }

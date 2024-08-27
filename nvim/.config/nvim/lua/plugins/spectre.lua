@@ -1,11 +1,17 @@
+local start_spectre = function()
+    local spectre = require('spectre')
+    spectre.toggle()
+end
+
+vim.keymap.set('n', '<leader>S', start_spectre, {
+    desc = "Toggle [S]pectre"
+})
+
 return {
     "nvim-pack/nvim-spectre",
+    cmd = "VeryLazy",
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
-        local spectre = require('spectre')
-        vim.keymap.set('n', '<leader>S', function() spectre.toggle() end, {
-            desc = "Toggle Spectre"
-        })
         -- vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
         --     desc = "Search current word"
         -- })

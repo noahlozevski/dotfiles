@@ -111,7 +111,7 @@ vim.cmd([[
 
 -- -- This enables the diagnostic hover if the cursor is over the relevant text
 -- vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})]]
---
+
 -- -- This enables the hover window automatically if the the cursor is anywhere in the line
 -- vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
 
@@ -122,3 +122,4 @@ function setTabStop(num)
     vim.opt.softtabstop = num
     vim.opt.shiftwidth = num
 end
+

@@ -23,7 +23,7 @@ return {
     },
 
 
-    'ThePrimeagen/vim-be-good',
+    { 'ThePrimeagen/vim-be-good',   cmd = "VimBeGood", },
     'nvim-lua/plenary.nvim',
 
     -- Themes
@@ -33,10 +33,10 @@ return {
     'folke/tokyonight.nvim',
     'ray-x/aurora',
     'rafamadriz/neon',
-    { "catppuccin/nvim", name = "catppuccin" },
+    { "catppuccin/nvim",             name = "catppuccin" },
     'nyoom-engineering/oxocarbon.nvim',
     { 'projekt0n/github-nvim-theme', },
     { 'rebelot/kanagawa.nvim' },
 
-    { 'airblade/vim-gitgutter', dependencies = { 'tpope/vim-fugitive' } }
+    { 'airblade/vim-gitgutter',      dependencies = { 'tpope/vim-fugitive' } }
 }

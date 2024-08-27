@@ -13,7 +13,7 @@ return {
         --     { desc = "Change Text (Telescope Menu)" })
 
         vim.keymap.set({ 'n', 'v' }, '<leader>cc', "<cmd>TextCaseOpenTelescope<CR>",
-            { desc = "Change Text (Telescope Menu)" })
+            { desc = "Change Text Case (Telescope Menu)" })
 
         -- vim.keymap.set({ 'n', 'v' }, 'gaa', "<cmd>TextCaseOpenTelescopeQuickChange<CR>",
         --     { desc = "Telescope Quick Change" })
