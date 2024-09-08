@@ -18,7 +18,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 18
+accordion-padding = 12
 
 # Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
@@ -98,35 +98,19 @@ alt-shift-equal = 'resize smart +50'
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
 alt-3 = 'workspace 3'
-alt-4 = 'workspace 4'
-alt-5 = 'workspace 5'
-alt-6 = 'workspace 6'
-alt-7 = 'workspace 7'
-alt-8 = 'workspace 8'
-alt-9 = 'workspace 9'
 
 alt-t = 'workspace T' # t for terminal
 alt-m = 'workspace M' # m for messaging
-# alt-a = 'workspace A' # a for arc
 alt-i = 'workspace I' # i for ide
-alt-s = 'workspace S'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 alt-shift-1 = 'move-node-to-workspace 1'
 alt-shift-2 = 'move-node-to-workspace 2'
 alt-shift-3 = 'move-node-to-workspace 3'
-alt-shift-4 = 'move-node-to-workspace 4'
-alt-shift-5 = 'move-node-to-workspace 5'
-alt-shift-6 = 'move-node-to-workspace 6'
-alt-shift-7 = 'move-node-to-workspace 7'
-alt-shift-8 = 'move-node-to-workspace 8'
-alt-shift-9 = 'move-node-to-workspace 9'
 
 alt-shift-t = 'move-node-to-workspace T'
 alt-shift-m = 'move-node-to-workspace M'
-# alt-shift-b = 'move-node-to-workspace B'
 alt-shift-i = 'move-node-to-workspace I'
-alt-shift-s = 'move-node-to-workspace S'
 
 alt-shift-f = 'fullscreen'
 
@@ -157,7 +141,7 @@ esc = 'mode main'
 esc = ['reload-config', 'mode main']
 r = ['flatten-workspace-tree', 'mode main'] # reset layout
 #s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
-f = [
+q = [
     'layout floating tiling',
     'mode main',
 ] # Toggle between floating and tiling layout
@@ -209,19 +193,23 @@ run = 'move-node-to-workspace M'
 if.app-id = 'com.apple.MobileSMS'
 run = 'move-node-to-workspace M'
 
-# # browsers
-# [[on-window-detected]]
-# if.app-id = 'company.thebrowser.Browser'
-# run = 'move-node-to-workspace B'
-# [[on-window-detected]]
-# if.app-id = 'com.google.Chrome'
-# run = 'move-node-to-workspace B'
-# [[on-window-detected]]
-# if.app-id = 'org.mozilla.firefox'
-# run = 'move-node-to-workspace B'
-# [[on-window-detected]]
-# if.app-id = 'com.apple.Safari'
-# run = 'move-node-to-workspace B'
+# browsers
+[[on-window-detected]]
+if.app-id = 'company.thebrowser.Browser'
+run = 'move-node-to-workspace 1'
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = 'move-node-to-workspace 1'
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
+run = 'move-node-to-workspace 1'
+[[on-window-detected]]
+if.app-id = 'com.apple.Safari'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+check-further-callbacks = true
+run = 'layout floating'
 
 [workspace-to-monitor-force-assignment]
 T = ['lg', 'main']
