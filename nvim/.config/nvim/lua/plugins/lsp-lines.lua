@@ -6,7 +6,7 @@ local config = {
 }
 vim.diagnostic.config(config)
 
-vim.keymap.set("", "<leader>l", function()
+vim.keymap.set("", "<leader>dl", function()
     if not config.virtual_lines then
         config.virtual_lines = { only_current_line = true }
     else
@@ -14,7 +14,7 @@ vim.keymap.set("", "<leader>l", function()
     end
     vim.diagnostic.config(config)
 end, {
-    desc = "Toggle diagnostic virtual [l]ines"
+    desc = "Toggle [d]iagnostic virtual [l]ines"
 })
 
 vim.keymap.set("", "<leader>dt", function()
