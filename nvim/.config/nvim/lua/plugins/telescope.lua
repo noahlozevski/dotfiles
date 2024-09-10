@@ -10,7 +10,7 @@ return {
     },
     config = function()
         local telescope = require('telescope')
-        -- local lga_actions = require("telescope-live-grep-args.actions")
+        local lga_actions = require("telescope-live-grep-args.actions")
 
         telescope.setup({
             defaults = {
@@ -63,17 +63,26 @@ return {
                     end,
                 }
             },
-            -- extensions = {
-            --     live_grep_args = {
-            --         auto_quoting = true, -- enable/disable auto-quoting
-            --         mappings = {         -- extend mappings
-            --             i = {
-            --                 ["<C-k>"] = lga_actions.quote_prompt(),
-            --                 ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
-            --             },
-            --         },
-            --     }
-            -- }
+            extensions = {
+                live_grep_args = {
+                    auto_quoting = true, -- enable/disable auto-quoting
+                    mappings = {         -- extend mappings
+                        i = {
+                            -- wraps current prompt in quotes
+                            -- "foo"
+                            ["<C-k>"] = lga_actions.quote_prompt(),
+                            -- search for file paths
+                            -- "foo" --iglob **/bar/**
+                            ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                            -- searchs for specific type
+                            -- "foo" -tmd
+                            ["<C-t>"] = lga_actions.quote_prompt({ postfix = " -t" }),
+                            -- freeze the current list and start a fuzzy search in the frozen list
+                            ["<C-f>"] = lga_actions.to_fuzzy_refine,
+                        },
+                    },
+                }
+            }
         })
 
         require("telescope").load_extension("live_grep_args")
@@ -99,8 +108,15 @@ return {
         -- end
         --
 
+        local lga = require("telescope").extensions.live_grep_args;
         function search_all_files()
-            builtin.live_grep({
+            -- builtin.live_grep({
+            --     hidden = true,
+            --     no_ignore = true,
+            --     no_ignore_parent = true,
+            --     file_ignore_patterns = {}
+            -- })
+            lga.live_grep_args({
                 hidden = true,
                 no_ignore = true,
                 no_ignore_parent = true,
@@ -137,7 +153,7 @@ return {
         -- vim.keymap.set('n', '<leader>fl', extensions.live_grep_args.live_grep_args, { silent = true })
         -- search all (filtered) files
         vim.keymap.set('n', '<leader>fl', function()
-            builtin.live_grep({
+            lga.live_grep_args({
                 -- no_ignore = true,
                 -- no_ignore_parent = true,
                 file_ignore_patterns = default_ignored_files,
@@ -158,5 +174,6 @@ return {
         -- vim.keymap.set('n', '<leader>fs', function()
         --     builtin.grep_string({ search = vim.fn.input(string.format("Search workspace (root: %s) > ", vim.fn.getcwd())) });
         -- end)
+        -- then load the extension
     end
 }
