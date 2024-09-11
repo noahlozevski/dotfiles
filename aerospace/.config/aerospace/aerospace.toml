@@ -176,6 +176,9 @@ run = 'move-node-to-workspace T'
 if.app-id = 'com.apple.dt.Xcode'
 run = 'move-node-to-workspace I'
 [[on-window-detected]]
+if.app-id = 'com.google.android.studio'
+run = 'move-node-to-workspace I'
+[[on-window-detected]]
 if.app-id = 'com.jetbrains.intellij'
 run = 'move-node-to-workspace I'
 [[on-window-detected]]
