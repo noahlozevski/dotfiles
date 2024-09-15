@@ -25,7 +25,7 @@ style = "Regular"
 
 [font.bold]
 family = "JetBrainsMono Nerd Font"
-style = "Bold"
+style = "Regular"
 
 [font.italic]
 family = "JetBrains Mono"
