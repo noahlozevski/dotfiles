@@ -227,15 +227,15 @@ require("mason-lspconfig").setup_handlers {
       }
     }
   end,
-  ["eslint"] = function()
-    lspconfig.eslint.setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
-      filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact',
-        'typescript.tsx' },
-      -- handlers = default_handlers
-    }
-  end,
+  -- ["eslint"] = function()
+  --   lspconfig.eslint.setup {
+  --     on_attach = on_attach,
+  --     capabilities = capabilities,
+  --     filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact',
+  --       'typescript.tsx' },
+  --     -- handlers = default_handlers
+  --   }
+  -- end,
   -- zig config
   ["zls"] = function()
     local auto_format_on_save = false
@@ -302,11 +302,18 @@ require("mason-lspconfig").setup_handlers {
       prettier = require('efmls-configs.formatters.prettier')
     end
 
+    local eslint
+    if vim.fn.executable('eslint_d') == 1 then
+      eslint = require('efmls-configs.formatters.eslint_d')
+    else
+      eslint = require('efmls-configs.formatters.eslint')
+    end
+
     -- EFM formatting language specs
     local languages = require('efmls-configs.defaults').languages()
 
     -- default to using the other eslint server
-    local servers = { prettier }
+    local servers = { prettier, eslint }
 
     languages = vim.tbl_extend('force', languages, {
       typescript = servers,

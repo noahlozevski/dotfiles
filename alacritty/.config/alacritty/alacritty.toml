@@ -1,0 +1,67 @@
+# Enable live config reload
+live_config_reload = true
+
+import = [
+# "~/.config/alacritty/rose-pine.toml",
+"~/.config/alacritty/rose-pine-moon.toml",
+# "~/.config/alacritty/rose-pine-dawn.toml",
+]
+
+# Window configuration
+[window]
+opacity = 0.80
+blur = true
+decorations = "None"
+startup_mode = "Maximized"
+option_as_alt = "Both"
+
+# Font configuration
+[font]
+size = 20.0
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "JetBrains Mono"
+style = "Italic"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font"
+style = "Bold Italic"
+
+# # Color scheme (approximating rose-pine-moon)
+# [colors.primary]
+# background = "#232136"
+# foreground = "#e0def4"
+#
+# [colors.normal]
+# black = "#393552"
+# red = "#eb6f92"
+# green = "#9ccfd8"
+# yellow = "#f6c177"
+# blue = "#3e8fb0"
+# magenta = "#c4a7e7"
+# cyan = "#ea9a97"
+# white = "#e0def4"
+#
+# [colors.bright]
+# black = "#6e6a86"
+# red = "#eb6f92"
+# green = "#9ccfd8"
+# yellow = "#f6c177"
+# blue = "#3e8fb0"
+# magenta = "#c4a7e7"
+# cyan = "#ea9a97"
+# white = "#e0def4"
+#
+# Key bindings
+[[keyboard.bindings]]
+key = "Return"
+mods = "Command"
+action = "ToggleFullscreen"
