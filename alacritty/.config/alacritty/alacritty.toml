@@ -3,7 +3,7 @@ live_config_reload = true
 
 import = [
 # "~/.config/alacritty/rose-pine.toml",
-"~/.config/alacritty/rose-pine-moon.toml",
+# "~/.config/alacritty/rose-pine-moon.toml",
 # "~/.config/alacritty/rose-pine-dawn.toml",
 ]
 
@@ -35,31 +35,31 @@ style = "Italic"
 family = "JetBrainsMono Nerd Font"
 style = "Bold Italic"
 
-# # Color scheme (approximating rose-pine-moon)
-# [colors.primary]
-# background = "#232136"
-# foreground = "#e0def4"
-#
-# [colors.normal]
-# black = "#393552"
-# red = "#eb6f92"
-# green = "#9ccfd8"
-# yellow = "#f6c177"
-# blue = "#3e8fb0"
-# magenta = "#c4a7e7"
-# cyan = "#ea9a97"
-# white = "#e0def4"
-#
-# [colors.bright]
-# black = "#6e6a86"
-# red = "#eb6f92"
-# green = "#9ccfd8"
-# yellow = "#f6c177"
-# blue = "#3e8fb0"
-# magenta = "#c4a7e7"
-# cyan = "#ea9a97"
-# white = "#e0def4"
-#
+# Color scheme (approximating rose-pine-moon)
+[colors.primary]
+background = "#232136"
+foreground = "#e0def4"
+
+[colors.normal]
+black = "#393552"
+red = "#eb6f92"
+green = "#9ccfd8"
+yellow = "#f6c177"
+blue = "#3e8fb0"
+magenta = "#c4a7e7"
+cyan = "#ea9a97"
+white = "#e0def4"
+
+[colors.bright]
+black = "#6e6a86"
+red = "#eb6f92"
+green = "#9ccfd8"
+yellow = "#f6c177"
+blue = "#3e8fb0"
+magenta = "#c4a7e7"
+cyan = "#ea9a97"
+white = "#e0def4"
+
 # Key bindings
 [[keyboard.bindings]]
 key = "Return"
