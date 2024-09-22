@@ -173,6 +173,9 @@ run = 'move-node-to-workspace T'
 [[on-window-detected]]
 if.app-id = 'org.alacritty'
 run = 'move-node-to-workspace T'
+[[on-window-detected]]
+if.app-id = 'com.apple.Terminal'
+run = 'move-node-to-workspace I'
 
 # ide's
 [[on-window-detected]]
@@ -187,6 +190,12 @@ run = 'move-node-to-workspace I'
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCodeInsiders'
 run = 'move-node-to-workspace I'
+[[on-window-detected]]
+if.app-id = 'com.postmanlabs.mac'
+run = 'move-node-to-workspace I'
+[[on-window-detected]]
+if.app-id = 'com.proxyman.NSProxy'
+run = 'move-node-to-workspace I'
 
 # messaging apps
 [[on-window-detected]]
@@ -197,6 +206,9 @@ if.app-id = 'com.microsoft.Outlook'
 run = 'move-node-to-workspace M'
 [[on-window-detected]]
 if.app-id = 'com.apple.MobileSMS'
+run = 'move-node-to-workspace M'
+[[on-window-detected]]
+if.app-id = 'com.amazon.Amazon-Chime'
 run = 'move-node-to-workspace M'
 
 # browsers
