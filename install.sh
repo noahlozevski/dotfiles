@@ -1,14 +1,13 @@
 #!/bin/zsh
 
 
-# Mac specific installation
-brew install koekeishiya/formulae/yabai
-yabai --start-service
-brew install koekeishiya/formulae/skhd
-skhd --start-service
-
 # mac sed sucks
 brew install gnu-sed
 
 # essential tools
 brew install stow
+
+
+# skagent prioritizer
+stow xcode -t ~/ --no-folding
+launchctl load ~/Library/LaunchAgents/com.lozevski.renice_skagent.plist
