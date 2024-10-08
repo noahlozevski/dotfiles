@@ -62,6 +62,9 @@ pip3 cache purge
 
 # this cleans remote / private packages for some reason?
 brew cleanup --prune=all --verbose
+
+./clean_all_workspaces.sh
+
 brazil-package-cache stop
 echo -n "Cleaning pkg cache ..." && brazil-package-cache clean --debug --days 0 --keepCacheHours 0 --percent 0 2>&1
 # rm -frv /local/home/${USER}/brazil-pkg-cache/s3BinaryFiles/*
@@ -73,3 +76,4 @@ remove_directories_greater_than_mb 100 $HOME/Library/Logs
 delete_all_of_file_type apk $HOME/Downloads
 delete_all_of_file_type ipa $HOME/Downloads
 delete_all_of_file_type dmg $HOME/Downloads
+
