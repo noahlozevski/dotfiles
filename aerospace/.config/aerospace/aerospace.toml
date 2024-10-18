@@ -165,6 +165,9 @@ alt-shift-l = ['join-with right', 'mode main']
 [[on-window-detected]]
 if.app-name-regex-substring = 'simulator'
 run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'com.apple.FaceTime'
+run = 'layout floating'
 
 # terminal
 [[on-window-detected]]
