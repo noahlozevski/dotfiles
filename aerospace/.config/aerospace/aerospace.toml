@@ -11,6 +11,9 @@ after-startup-command = []
 # Start AeroSpace at login
 start-at-login = true
 
+
+# automatically-unhide-macos-hidden-apps = true
+
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
@@ -21,7 +24,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 accordion-padding = 12
 
 # Possible values: tiles|accordion
-default-root-container-layout = 'tiles'
+default-root-container-layout = 'accordion'
 
 # Possible values: horizontal|vertical|auto
 # 'auto' means: wide monitor (anything wider than high) gets horizontal orientation,
@@ -102,6 +105,7 @@ alt-3 = 'workspace 3'
 alt-t = 'workspace T' # t for terminal
 alt-m = 'workspace M' # m for messaging
 alt-i = 'workspace I' # i for ide
+alt-x = 'workspace X' # x for xcode
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 alt-shift-1 = 'move-node-to-workspace 1'
@@ -111,6 +115,7 @@ alt-shift-3 = 'move-node-to-workspace 3'
 alt-shift-t = 'move-node-to-workspace T'
 alt-shift-m = 'move-node-to-workspace M'
 alt-shift-i = 'move-node-to-workspace I'
+alt-shift-x = 'move-node-to-workspace X'
 
 alt-shift-f = 'fullscreen'
 
@@ -178,12 +183,12 @@ if.app-id = 'org.alacritty'
 run = 'move-node-to-workspace T'
 [[on-window-detected]]
 if.app-id = 'com.apple.Terminal'
-run = 'move-node-to-workspace I'
+run = 'move-node-to-workspace T'
 
 # ide's
 [[on-window-detected]]
 if.app-id = 'com.apple.dt.Xcode'
-run = 'move-node-to-workspace I'
+run = 'move-node-to-workspace X'
 [[on-window-detected]]
 if.app-id = 'com.google.android.studio'
 run = 'move-node-to-workspace I'
