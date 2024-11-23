@@ -74,11 +74,11 @@ cmp.setup.cmdline(':', {
             { name = 'cmdline',         priority_weight = 1000 },
             { name = 'async_path',      priority_weight = 100 },
             -- { name = 'zsh', },
-            { name = "cmdline_history", priority_weight = 100 },
-            { name = "rg",              priority_weight = 1 },
+            { name = "cmdline_history", priority_weight = 10 },
+            -- { name = "rg",              priority_weight = 1, option = { max_matches = 1 } },
         },
         {
-            fuzzy_buffer_conf
+            -- fuzzy_buffer_conf
         })
 })
 

@@ -3,6 +3,31 @@ return {
     -- event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
         { 'neovim/nvim-lspconfig' },
+        {
+            'j-hui/fidget.nvim',
+            opts = {
+                notification = {
+                    window = {
+                        winblend = 0, -- Background color opacity in the notification window
+                    },
+                },
+                integration = {
+                    ["nvim-tree"] = {
+                        enable = true,
+                    },
+                    ["xcodebuild-nvim"] = {
+                        enable = true,
+                    },
+                },
+
+                logger = {
+                    level = vim.log.levels.WARN, -- Minimum logging level
+                    max_size = 10000,            -- Maximum log file size, in KB
+                    float_precision = 0.01,      -- Limit the number of decimals displayed for floats
+                    path = string.format("%s/fidget.nvim.log", vim.fn.stdpath("cache")),
+                },
+            }
+        },
         { 'hrsh7th/cmp-buffer' },
         { 'hrsh7th/cmp-path' },
         { 'hrsh7th/cmp-cmdline' },
