@@ -72,7 +72,7 @@ return {
             })
         end
 
-        vim.api.nvim_create_user_command('StartCopilot', start_copilot, {})
+        vim.api.nvim_create_user_command('CopilotStart', start_copilot, {})
 
         -- if the the lua file at lozevski.work is callable, then call the start_copilot function
         if vim.g.is_work then

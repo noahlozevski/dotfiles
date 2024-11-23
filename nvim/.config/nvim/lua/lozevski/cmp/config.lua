@@ -30,6 +30,7 @@ end
 local fuzzy_buffer_conf = {
     name = 'fuzzy_buffer',
     keyword_length = 4,
+    priority_weight = 1,
     option = {
         max_matches = 2,
         -- pull from all loaded buffers
@@ -49,9 +50,9 @@ local fuzzy_buffer_conf = {
 -- Set configuration for specific filetype.
 cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources({
-        { name = 'cmp_git' },
-        { name = 'async_path' },
-        { name = "rg" },
+        { name = 'cmp_git',    priority_weight = 1000 },
+        { name = 'async_path', priority_weight = 100 },
+        { name = "rg",         priority_weight = 1 },
         fuzzy_buffer_conf,
     })
 })
@@ -59,16 +60,10 @@ cmp.setup.filetype('gitcommit', {
 cmp.setup.cmdline({ '?', '/' }, {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-        { name = 'nvim_lsp_document_symbol' },
+        { name = 'nvim_lsp_document_symbol', priority_weight = 1000 },
     }, {
-        { name = "rg" },
-        {
-            name = 'fuzzy_buffer',
-            -- no keyword length to find matches when replacing
-            option = {
-                max_matches = 5,
-            }
-        }
+        { name = "rg",           priority_weight = 1 },
+        { name = 'fuzzy_buffer', priority_weight = 1, option = { max_matches = 5, }, }
     })
 })
 
@@ -76,10 +71,11 @@ cmp.setup.cmdline({ '?', '/' }, {
 cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-            { name = 'cmdline' },
-            { name = 'async_path' },
+            { name = 'cmdline',         priority_weight = 1000 },
+            { name = 'async_path',      priority_weight = 100 },
             -- { name = 'zsh', },
-            { name = "cmdline_history" },
+            { name = "cmdline_history", priority_weight = 100 },
+            { name = "rg",              priority_weight = 1 },
         },
         {
             fuzzy_buffer_conf
@@ -91,12 +87,12 @@ local opts = {
         ghost_text = false,
     },
     formatting = {
-        fields = { "kind", "abbr", "menu" },
+        fields = { "abbr", "kind", "menu" },
         format = function(entry, vim_item)
             local kind = require("lspkind").cmp_format({
-                -- mode = "symbol_text",
-                maxwidth = 50,
-                ellipsis_char = '...',
+                mode = "symbol_text",
+                maxwidth = 40,
+                ellipsis_char = '..',
                 preset = 'default',
                 -- show_labelDetails = true,
             })(entry, vim_item)
@@ -121,7 +117,7 @@ local opts = {
                 lspserver_name = menu
             end
 
-            kind.menu = "    (" .. (lspserver_name) .. ")"
+            kind.menu = "(" .. (lspserver_name) .. ")"
             return vim_item
         end,
     },
@@ -134,7 +130,7 @@ local opts = {
     window = {
         completion = cmp.config.window.bordered({
             winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
-            col_offset = -3,
+            -- col_offset = -3,
             side_padding = 0,
             scrollbar = true,
         }),
@@ -144,34 +140,30 @@ local opts = {
         }),
     },
     sorting = {
-        -- -- Need this override for cmp fuzzy buffer
-        -- -- Need to do the same thing for fuzzy path if enabled
-        -- priority_weight = 2,
-        -- comparators = {
-        --     require('cmp_fuzzy_buffer.compare'),
-        --     compare.offset,
-        --     compare.exact,
-        --     compare.score,
-        --     -- require("cmp-under-comparator").under,
-        --     compare.recently_used,
-        --     compare.kind,
-        --     compare.sort_text,
-        --     compare.length,
-        --     compare.order,
-        -- }
-        priority_weight = 1,
+        priority_weight = 2,
         comparators = {
-            compare.score,
-            -- compare.exact,
-            -- compare.offset,
-            -- require('cmp_fuzzy_buffer.compare'),
-            -- compare.score,
-            -- compare.kind,
-            -- compare.recently_used,
-            -- compare.sort_text,
-            -- compare.length,
-            -- compare.order,
-        }
+            cmp.config.compare.score,
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            function(entry1, entry2)
+                local kind_priority = {
+                    nvim_lsp = 1,
+                    luasnip = 2,
+                    buffer = 1000,
+                    fuzzy_buffer = 1000,
+                    path = 4,
+                    cmdline = 5,
+                    rg = 6,
+                }
+                local kind1 = kind_priority[entry1.source.name] or 100
+                local kind2 = kind_priority[entry2.source.name] or 100
+                return kind1 < kind2
+            end,
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+        },
     },
     mapping = cmp.mapping.preset.insert({
         ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
@@ -194,32 +186,9 @@ local opts = {
         ['<C-f>'] = cmp.mapping.scroll_docs(-4),
         -- close the suggestion menu
         ['<C-e>'] = cmp.mapping.abort(),
-        -- this is supposed to be 'safe' enter key mapping
-        -- ["<CR>"] = cmp.mapping({
-        --     i = function(fallback)
-        --         if cmp.visible() and cmp.get_active_entry() then
-        --             cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-        --         else
-        --             fallback()
-        --         end
-        --     end,
-        --     s = cmp.mapping.confirm({ select = true }),
-        --     c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
-        -- }),
         -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         ['<CR>'] = cmp.mapping.confirm({ select = false }),
         ["<Tab>"] = cmp.mapping(function(fallback)
-            -- if cmp.visible() then
-            --     -- dont override the tab until we select a completion
-            --     fallback()
-            --     -- -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-            --     -- -- that way you will only jump inside the snippet region
-            -- if luasnip.expand_or_locally_jumpable() then
-            --     luasnip.expand_or_jump()
-            -- else
-            --     fallback()
-            -- end
-
             if cmp.visible() and cmp.get_active_entry() then
                 cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
             elseif vim.g.copilot_enabled and require("copilot.suggestion").is_visible() then
@@ -227,21 +196,11 @@ local opts = {
             elseif luasnip.expand_or_locally_jumpable() then
                 luasnip.expand_or_jump()
             else
-                -- cmp.confirm({ select = false })
                 fallback()
             end
-            -- elseif has_words_before() then
-            --     -- try to trigger the completion window for suggestions
-            --     cmp.complete()
-            -- else
-            --     fallback()
-            -- end
         end, { "i", "s" }),
 
         ["<S-Tab>"] = cmp.mapping(function(fallback)
-            -- if cmp.visible() then
-            --     -- dont override tab when nothing is selected
-            --     fallback()
             if luasnip.jumpable(-1) then
                 luasnip.jump(-1)
             else
@@ -250,13 +209,13 @@ local opts = {
         end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
-        { name = 'nvim_lsp', },
-        { name = 'nvim_lua', },
-        { name = 'nvim_lsp_signature_help', },
-        { name = 'path', },
-        { name = "rg",                      keyword_length = 4, },
+        { name = 'nvim_lsp',                priority_weight = 1000 },
+        { name = 'nvim_lua',                priority_weight = 1000 },
+        { name = 'nvim_lsp_signature_help', priority_weight = 500 },
+        { name = 'path',                    priority_weight = 100 },
+        { name = "rg",                      priority_weight = 100, keyword_length = 4, },
+        { name = 'luasnip',                 priority_weight = 50 },
         fuzzy_buffer_conf,
-        { name = 'luasnip', },
     })
 }
 

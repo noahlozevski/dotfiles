@@ -110,18 +110,18 @@ return {
 
         local lga = require("telescope").extensions.live_grep_args;
         function search_all_files()
-            -- builtin.live_grep({
-            --     hidden = true,
-            --     no_ignore = true,
-            --     no_ignore_parent = true,
-            --     file_ignore_patterns = {}
-            -- })
-            lga.live_grep_args({
+            builtin.live_grep({
                 hidden = true,
                 no_ignore = true,
                 no_ignore_parent = true,
                 file_ignore_patterns = {}
             })
+            -- lga.live_grep_args({
+            --     hidden = true,
+            --     no_ignore = true,
+            --     no_ignore_parent = true,
+            --     file_ignore_patterns = {}
+            -- })
         end
 
         function find_all_files()
