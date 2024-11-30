@@ -206,7 +206,7 @@ require("mason-lspconfig").setup_handlers {
             on_attach = on_attach,
             capabilities = capabilities,
             filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact',
-                'typescript.tsx' },
+                'typescript.tsx', 'html' },
             handlers = {
                 -- ['textDocument/declaration'] = function(err, result, method, ...)
                 -- end,
