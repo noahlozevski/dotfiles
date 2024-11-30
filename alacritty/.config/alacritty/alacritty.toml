@@ -1,15 +1,16 @@
 # Enable live config reload
+[general]
 live_config_reload = true
 
-import = [
-# "~/.config/alacritty/rose-pine.toml",
-# "~/.config/alacritty/rose-pine-moon.toml",
-# "~/.config/alacritty/rose-pine-dawn.toml",
-]
+# import = [
+# # "~/.config/alacritty/rose-pine.toml",
+# # "~/.config/alacritty/rose-pine-moon.toml",
+# # "~/.config/alacritty/rose-pine-dawn.toml",
+# ]
 
 # Window configuration
 [window]
-opacity = 0.80
+opacity = 0.8
 blur = true
 decorations = "None"
 startup_mode = "Maximized"
