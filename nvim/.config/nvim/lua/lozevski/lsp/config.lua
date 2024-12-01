@@ -2,7 +2,7 @@ local lsp = require('lsp-zero').preset({})
 
 lsp.ensure_installed({
     -- add more servers / languages
-    'tsserver',
+    'ts_ls',
     -- 'eslint',
     'rust_analyzer',
     'lua_ls',
@@ -38,22 +38,6 @@ lsp.set_preferences({
         info = '»'
     }
 })
-
--- -- These languages will be formatted on save + will be loaded on start
--- local allowed_format_servers = {
---     -- 'tsserver',
---     -- 'eslint',
---     'clangd',
---     'rust_analyzer',
---     'lua_ls',
---     -- 'null-ls',
---     -- 'html',
---     -- 'css'
---     -- 'prettier',
--- }
--- local function allow_format(servers)
---     return function(client) return vim.tbl_contains(servers, client.name) end
--- end
 
 local function on_attach(client, bufnr)
     lsp.default_keymaps({ buffer = bufnr })
@@ -93,12 +77,12 @@ vim.diagnostic.config({
 })
 
 -- Set up lspconfig for each server
---   local capabilities = 
+--   local capabilities =
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local lspconfig = require('lspconfig')
 -- local configured_servers = {
---     -- 'tsserver',
+--     -- 'ts_ls',
 --     -- 'eslint',
 --     'clangd',
 --     'rust_analyzer',
@@ -192,7 +176,7 @@ require("mason-lspconfig").setup_handlers {
         }
         -- pass on configing this plugin, this is triggered when opening java files
     end,
-    ["tsserver"] = function()
+    ["ts_ls"] = function()
         -- for handler, v in pairs(vim.lsp.handlers) do
         --     vim.notify(handler)
         --     vim.lsp.handlers[handler] = function(err, result, method, ...)
@@ -202,7 +186,7 @@ require("mason-lspconfig").setup_handlers {
         --     end
         -- end
 
-        lspconfig.tsserver.setup {
+        lspconfig.ts_ls.setup {
             on_attach = on_attach,
             capabilities = capabilities,
             filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact',
@@ -393,59 +377,6 @@ require("mason-lspconfig").setup_handlers {
         }
     end
 }
-
-
--- require("lspconfig").clangd.setup {
---     on_attach = on_attach,
---     capabilities = capabilities,
---     cmd = {
---         "clangd",
---         "--offset-encoding=utf-16",
---     },
--- }
-
-
-
--- lspconfig.tsserver.setup {
---     on_attach = on_attach,
---     capabilities = capabilities,
---     filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' },
---     handlers = {
---         ['textDocument/definition'] = function(err, result, method, ...)
---             if vim.tbl_islist(result) and #result > 1 then
---                 local filtered_result = filter(result, filterReactDTS)
---                 return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
---             end
---
---             vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
---         end
---
---     }
--- }
-
--- lspconfig.eslint.setup {
---     on_attach = on_attach,
---     capabilities = capabilities,
---     filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' },
--- }
--- -- Fixes the undefined vim global annoyance
--- lspconfig.lua_ls.setup {
---     settings = {
---         Lua = {
---             diagnostics = {
---                 -- Get the language server to recognize the `vim` global
---                 globals = {
---                     'vim',
---                     'augroup',
---                     'require'
---                 },
---             },
---             telemetry = {
---                 enable = false,
---             },
---         },
---     },
--- }
 
 
 local function get_store_kit_lsp_path()
