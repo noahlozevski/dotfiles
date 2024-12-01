@@ -368,14 +368,14 @@ require("mason-lspconfig").setup_handlers {
             -- handlers = default_handlers
         }
     end,
-    ["sourcekit"] = function()
-        lspconfig.sourcekit.setup {
-            cmd = { 'xcrun', 'sourcekit-lsp' },
-            capabilities = capabilities,
-            on_attach = on_attach,
-            root_dir = require('lspconfig.util').root_pattern('buildServer.json', 'Package.swift', '.git'),
-        }
-    end
+    -- ["sourcekit"] = function()
+    --     lspconfig.sourcekit.setup {
+    --         cmd = { 'xcrun', 'sourcekit-lsp' },
+    --         capabilities = capabilities,
+    --         on_attach = on_attach,
+    --         root_dir = require('lspconfig.util').root_pattern('buildServer.json', 'Package.swift', '.git'),
+    --     }
+    -- end
 }
 
 
@@ -392,26 +392,26 @@ end
 
 
 
--- swift lsp setup, needs to be seperate from mason since sourcekit isnt supported there
-local swift_lsp = vim.api.nvim_create_augroup("swift_lsp", { clear = true })
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "swift" },
-    callback = function()
-        local root_dir = vim.fs.dirname(vim.fs.find({
-            "Package.swift",
-            ".git"
-        }, { upward = true })[1])
-        local sourceKitPath = get_store_kit_lsp_path()
-        local client = vim.lsp.start({
-            name = "sourcekit-lsp",
-            cmd = { sourceKitPath },
-            root_dir = root_dir,
-        })
-        vim.lsp.buf_attach_client(0, client)
-    end,
-    group = swift_lsp,
-})
-
+-- -- swift lsp setup, needs to be seperate from mason since sourcekit isnt supported there
+-- local swift_lsp = vim.api.nvim_create_augroup("swift_lsp", { clear = true })
+-- vim.api.nvim_create_autocmd("FileType", {
+--     pattern = { "swift" },
+--     callback = function()
+--         local root_dir = vim.fs.dirname(vim.fs.find({
+--             "Package.swift",
+--             ".git"
+--         }, { upward = true })[1])
+--         local sourceKitPath = get_store_kit_lsp_path()
+--         local client = vim.lsp.start({
+--             name = "sourcekit-lsp",
+--             cmd = { sourceKitPath },
+--             root_dir = root_dir,
+--         })
+--         vim.lsp.buf_attach_client(0, client)
+--     end,
+--     group = swift_lsp,
+-- })
+--
 
 pcall(require, 'work.lsp')
 
