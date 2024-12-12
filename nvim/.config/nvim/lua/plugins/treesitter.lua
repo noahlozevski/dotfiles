@@ -10,7 +10,7 @@ return {
 
             -- A list of parser names, or "all" (the five listed parsers should always be installed)
             ensure_installed = {
-                'cpp', 'javascript', 'rust', 'typescript', 'lua'
+                'cpp', 'javascript', 'rust', 'typescript', 'lua', 'markdown', 'markdown_inline',
             },
 
             -- ensure_installed = "all",

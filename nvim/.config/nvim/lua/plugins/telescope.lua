@@ -175,5 +175,9 @@ return {
         --     builtin.grep_string({ search = vim.fn.input(string.format("Search workspace (root: %s) > ", vim.fn.getcwd())) });
         -- end)
         -- then load the extension
+
+        vim.keymap.set('n', '<leader>sC', function()
+            builtin.find_files { cwd = '~/dotfiles' }
+        end, { desc = '[S]earch [C]onfig directory (dotfiles)' })
     end
 }

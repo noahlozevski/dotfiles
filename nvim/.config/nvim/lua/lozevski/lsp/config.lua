@@ -58,6 +58,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { buffer = args.buf, desc = "LSP: Next diagnostic" })
         vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { buffer = args.buf, desc = "LSP: Previous diagnostic" })
+        vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+        vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
         vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float,
             { buffer = args.buf, desc = "LSP: Open diagnostic float" })
 
@@ -67,14 +70,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 lsp.on_attach = on_attach
 
-vim.diagnostic.config({
-    -- virtual_text = {
-    --     source = 'if_many',
-    --     prefix = '●',
-    -- },
-    virtual_text = true,
-    severity_sort = true,
-})
+-- vim.diagnostic.config({
+--   -- virtual_text = {
+--   --     source = 'if_many',
+--   --     prefix = '●',
+--   -- },
+--   virtual_text = true,
+--   severity_sort = true,
+-- })
 
 -- Set up lspconfig for each server
 --   local capabilities =
@@ -368,14 +371,6 @@ require("mason-lspconfig").setup_handlers {
             -- handlers = default_handlers
         }
     end,
-    -- ["sourcekit"] = function()
-    --     lspconfig.sourcekit.setup {
-    --         cmd = { 'xcrun', 'sourcekit-lsp' },
-    --         capabilities = capabilities,
-    --         on_attach = on_attach,
-    --         root_dir = require('lspconfig.util').root_pattern('buildServer.json', 'Package.swift', '.git'),
-    --     }
-    -- end
 }
 
 
@@ -390,28 +385,8 @@ local function get_store_kit_lsp_path()
     return "sourcekit-lsp"
 end
 
+-- vim.lsp.set_log_level("debug")
 
-
--- -- swift lsp setup, needs to be seperate from mason since sourcekit isnt supported there
--- local swift_lsp = vim.api.nvim_create_augroup("swift_lsp", { clear = true })
--- vim.api.nvim_create_autocmd("FileType", {
---     pattern = { "swift" },
---     callback = function()
---         local root_dir = vim.fs.dirname(vim.fs.find({
---             "Package.swift",
---             ".git"
---         }, { upward = true })[1])
---         local sourceKitPath = get_store_kit_lsp_path()
---         local client = vim.lsp.start({
---             name = "sourcekit-lsp",
---             cmd = { sourceKitPath },
---             root_dir = root_dir,
---         })
---         vim.lsp.buf_attach_client(0, client)
---     end,
---     group = swift_lsp,
--- })
---
 
 pcall(require, 'work.lsp')
 
