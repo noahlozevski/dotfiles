@@ -28,8 +28,8 @@ delete "$HOME/Library/Application Support/Slack/logs/"
 
 delete $HOME/Library/Developer/Xcode/DerivedData/*
 delete $HOME/Library/Developer/CoreSimulator/Caches/*
-delete $HOME/Library/Developer/CoreSimulator/Devices/*
-delete "$HOME/Library/Developer/Xcode/iOS DeviceSupport"
+# delete $HOME/Library/Developer/CoreSimulator/Devices/*
+# delete "$HOME/Library/Developer/Xcode/iOS DeviceSupport"
 delete $HOME/Library/Developer/Xcode/UserData/Previews/*
 
 delete $HOME/Library/Caches/JetBrains/*
