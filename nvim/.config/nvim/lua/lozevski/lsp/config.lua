@@ -385,9 +385,38 @@ local function get_store_kit_lsp_path()
     return "sourcekit-lsp"
 end
 
--- vim.lsp.set_log_level("debug")
+local function has_sourcekit_lsp()
+    return vim.fn.executable("sourcekit-lsp") == 1
+end
 
 
+-- swift lsp setup, needs to be seperate from mason since sourcekit isnt supported there
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "swift" },
+    callback = function()
+        -- if sourcekit-lsp is not executable, then bail out
+        if has_sourcekit_lsp() then
+            return
+        end
+
+        local root_dir = vim.fs.dirname(vim.fs.find({
+            "buildServer.json",
+            "Package.swift",
+            ".git"
+        }, { upward = true })[1])
+        local sourceKitPath = get_store_kit_lsp_path()
+        local client = vim.lsp.start({
+            name = "sourcekit-lsp",
+            cmd = { sourceKitPath },
+            root_dir = root_dir,
+        })
+        vim.lsp.buf_attach_client(0, client)
+    end,
+    group = vim.api.nvim_create_augroup("swift_lsp", { clear = true }),
+})
+
+
+-- run work specific lsp setup
 pcall(require, 'work.lsp')
 
 lsp.setup()
