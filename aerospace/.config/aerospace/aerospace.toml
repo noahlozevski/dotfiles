@@ -173,6 +173,12 @@ run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.apple.FaceTime'
 run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'com.openai.chat'
+run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'com.anthropic.claudefordesktop'
+run = 'layout floating'
 
 # terminal
 [[on-window-detected]]
