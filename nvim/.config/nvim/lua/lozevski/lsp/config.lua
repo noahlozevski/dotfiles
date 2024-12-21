@@ -395,7 +395,7 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = { "swift" },
     callback = function()
         -- if sourcekit-lsp is not executable, then bail out
-        if has_sourcekit_lsp() then
+        if not has_sourcekit_lsp() then
             return
         end
 
