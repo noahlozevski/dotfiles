@@ -52,6 +52,7 @@ delete $HOME/.gradle/caches/*
 
 delete $HOME/brazil-pkg-cache/s3BinaryFiles/*
 delete $HOME/brazil-pkg-cache/logs/*
+delete $HOME/brazil-pkg-cache/tmp/*
 
 delete $HOME/.cache
 
