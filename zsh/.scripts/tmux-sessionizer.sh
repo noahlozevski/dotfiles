@@ -14,7 +14,7 @@ else
     running_sessions=$(tmux list-sessions -F "#{session_name}" 2> /dev/null | sort | uniq)
     workplaces=$(find $DEFAULT_CODE_DIR -mindepth 1 -maxdepth 1 -type d ! -name '.*' | sort | uniq)
     # start a fuzzy find search on all workspace folders
-    selected=$({ echo $running_sessions && echo $workplaces } | uniq | fzf --header="Select a session or workspace:")
+    selected=$({ echo $running_sessions && echo $workplaces && echo 'dotfiles' } | uniq | fzf --header="Select a session or workspace:")
 fi
 
 if [[ -z $selected ]]; then
