@@ -174,7 +174,7 @@ require("mason-lspconfig").setup_handlers {
     end,
     ["jdtls"] = function()
         lspconfig.jdtls.setup {
-            autostart = false,
+            autostart = true,
             -- handlers = default_handlers
         }
         -- pass on configing this plugin, this is triggered when opening java files
