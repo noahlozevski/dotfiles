@@ -197,39 +197,39 @@ run = 'move-node-to-workspace 2'
 # ide's
 [[on-window-detected]]
 if.app-id = 'com.apple.dt.Xcode'
-run = 'move-node-to-workspace 4'
+run = 'move-node-to-workspace 3'
 [[on-window-detected]]
 if.app-id = 'com.google.android.studio'
-run = 'move-node-to-workspace 4'
+run = 'move-node-to-workspace 3'
 [[on-window-detected]]
 if.app-id = 'com.jetbrains.intellij'
-run = 'move-node-to-workspace 4'
+run = 'move-node-to-workspace 3'
 [[on-window-detected]]
 if.app-id = 'com.jetbrains.intellij.ce'
-run = 'move-node-to-workspace 4'
+run = 'move-node-to-workspace 3'
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCodeInsiders'
-run = 'move-node-to-workspace 4'
+run = 'move-node-to-workspace 3'
 [[on-window-detected]]
 if.app-id = 'com.postmanlabs.mac'
-run = 'move-node-to-workspace 4'
+run = 'move-node-to-workspace 3'
 [[on-window-detected]]
 if.app-id = 'com.proxyman.NSProxy'
-run = 'move-node-to-workspace 4'
+run = 'move-node-to-workspace 3'
 
 # messaging apps
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
-run = 'move-node-to-workspace 3'
+run = 'move-node-to-workspace 4'
 [[on-window-detected]]
 if.app-id = 'com.microsoft.Outlook'
-run = 'move-node-to-workspace 3'
+run = 'move-node-to-workspace 4'
 [[on-window-detected]]
 if.app-id = 'com.apple.MobileSMS'
-run = 'move-node-to-workspace 3'
+run = 'move-node-to-workspace 4'
 [[on-window-detected]]
 if.app-id = 'com.amazon.Amazon-Chime'
-run = 'move-node-to-workspace 3'
+run = 'move-node-to-workspace 4'
 
 # browsers
 [[on-window-detected]]
