@@ -226,6 +226,9 @@ run = 'move-node-to-workspace 4'
 [[on-window-detected]]
 if.app-id = 'com.amazon.Amazon-Chime'
 run = 'move-node-to-workspace 4'
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
 check-further-callbacks = true
