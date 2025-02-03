@@ -555,7 +555,7 @@ bind -T copy-mode-vi Escape if-shell -F '#{selection_active}' 'send-keys -X clea
 
 bind -T copy-mode-vi i switch-client -T copyModeMultiKey_i
 bind -T copyModeMultiKey_i w send-keys -X select-word
-bind -T copyModeMultiKey_i W send-keys -X clear-selection \; send-keys -X previous-space \; send-keys -X begin-selection \; send-keys -X next-space-end
+bind -T copyModeMultiKey_i W send-keys -X clear-selection \; send-keys -X cursor-right \; send-keys -X previous-space \; send-keys -X begin-selection \; send-keys -X next-space-end
 bind -T copyModeMultiKey_i b send-keys -X clear-selection \; send-keys -X jump-to-backward '(' \; send-keys -X begin-selection \; send-keys -X jump-to-forward ')'
 bind -T copyModeMultiKey_i ( send-keys -X clear-selection \; send-keys -X jump-to-backward '(' \; send-keys -X begin-selection \; send-keys -X jump-to-forward ')'
 bind -T copyModeMultiKey_i ) send-keys -X clear-selection \; send-keys -X jump-to-backward '(' \; send-keys -X begin-selection \; send-keys -X jump-to-forward ')'
@@ -571,6 +571,10 @@ bind -T copyModeMultiKey_i \' send-keys -X clear-selection \; send-keys -X jump-
 bind -T copyModeMultiKey_i \" send-keys -X clear-selection \; send-keys -X jump-to-backward '"' \; send-keys -X begin-selection \; send-keys -X jump-to-forward '"'
 bind -T copyModeMultiKey_i l send-keys -X clear-selection \; send-keys -X back-to-indentation \; send-keys -X begin-selection \; send-keys -X end-of-line \; send-keys -X cursor-left \; send-keys -X other-end
 
+bind -T copyModeMultiKey_i p send-keys -X clear-selection \; \
+       send-keys -X jump-to-backward '{' \; \
+       send-keys -X begin-selection \; \
+       send-keys -X jump-to-forward '}'
 # -- custom variables ----------------------------------------------------------
 
 # to define a custom #{foo} variable, define a POSIX shell function between the
