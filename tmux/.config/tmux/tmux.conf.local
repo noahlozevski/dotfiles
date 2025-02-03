@@ -431,32 +431,24 @@ tmux_conf_urlscan_options="--compact --dedupe"
 # -- user customizations -------------------------------------------------------
 
 # this is the place to override or undo settings
-
-# start with mouse mode enabled
-set -g mouse on
-
-# force Vi mode
-#   really you should export VISUAL or EDITOR environment variable, see manual
-#set -g status-keys vi
-#set -g mode-keys vi
-
-# replace C-b by C-a instead of using both prefixes
-set -gu prefix2
-unbind C-a
-unbind C-b
-set -g prefix C-a
-bind C-a send-prefix
-
 # if you don't want Oh my tmux! to alter a binding, use #!important
 # bind c new-window -c '#{pane_current_path}' #!important
 
-# move status line to top
-#set -g status-position top
+# force Vi mode (also shoudl export EDITOR=vim)
+set -g status-keys vi
+set -g mode-keys vi
+
+# replace C-b by C-a instead of using both prefixes
+# set -gu prefix2
+# unbind C-a
+# unbind C-b
+# set -g prefix C-a
+# bind C-a send-prefix
 
 # # remap prefix from 'C-b' to 'C-a'
-# unbind C-b
-# set-option -g prefix C-a
-# bind-key C-a send-prefix
+unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
 
 # split panes using | and -
 bind | split-window -h
@@ -465,16 +457,13 @@ unbind '"'
 unbind %
 
 # # reload config file (change file location to your the tmux.conf you want to use)
-# bind r source-file ~/.config/tmux/.tmux.conf
+bind r source-file ~/.config/tmux/tmux.conf
+
+# open the whole pane's scrollback buffer in neovim
+bind-key C-v split-window 'tmux capture-pane -t:.- -Jp -S- | nvim -'
 
 # clear history
 bind j clear-history
-
-# switch panes using Alt-arrow without prefix
-bind -n M-Left select-pane -L
-bind -n M-Right select-pane -R
-bind -n M-Up select-pane -U
-bind -n M-Down select-pane -D
 
 # increase scrollback buffer
 set-option -g history-limit 1000000
@@ -482,9 +471,11 @@ set-option -g history-limit 1000000
 # Enable mouse control (clickable windows, panes, resizable panes)
 set -g mouse on
 
+# for responsiveness in vim
 set-option -g focus-events on
 set-option -sg escape-time 10
 
+# 1-based indexing!!!
 set -g base-index 1
 setw -g pane-base-index 1
 
@@ -492,6 +483,7 @@ setw -g pane-base-index 1
 set -g default-terminal "tmux-256color"
 set -ga terminal-overrides ",*256col*:Tc"
 
+# show / hide the status bar
 bind b set -g status
 # set -g status off
 
@@ -530,13 +522,54 @@ tmux_conf_uninstall_plugins_on_reload=true
 
 # to enable a plugin, use the 'set -g @plugin' syntax:
 # visit https://github.com/tmux-plugins for available plugins
-#set -g @plugin 'tmux-plugins/tmux-copycat'
-#set -g @plugin 'tmux-plugins/tmux-cpu'
-#set -g @plugin 'tmux-plugins/tmux-resurrect'
-#set -g @plugin 'tmux-plugins/tmux-continuum'
-#set -g @continuum-restore 'on'
-
 set -g @plugin 'tmux-plugins/tmux-logging'
+# shortcuts:
+# prefix + shift + p : toggle logging status
+# prefix + alt + p : save visible text to a file
+# prefix + alt + shift + p : save entire buffer to a file
+# prefix + alt + c : clear buffer
+# configures the log dir path
+set -g @logging-path "$HOME/Desktop"
+
+bind C-c copy-mode
+bind C-u copy-mode -e
+bind / copy-mode -e \; send-keys ?
+bind -T copy-mode-vi / command-prompt -i -p '(search down)' 'send-keys -X search-forward-incremental "%%%"'
+bind -T copy-mode-vi ? command-prompt -i -p '(search up)' 'send-keys -X search-backward-incremental "%%%"'
+bind -T copy-mode-vi WheelUpPane send-keys -X -N 1 scroll-up
+bind -T copy-mode-vi WheelDownPane send-keys -X -N 1 scroll-down
+bind -T copy-mode-vi : command-prompt
+bind -T copy-mode-vi 0 if-shell -F '#{copy_cursor_x}' 'send-keys -X start-of-line' 'send-keys -X back-to-indentation'
+bind -T copy-mode-vi - send-keys -X end-of-line
+bind -T copy-mode-vi u send-keys -X halfpage-up \; send-keys -X z
+bind -T copy-mode-vi d send-keys -X halfpage-down
+bind -T copy-mode-vi v if-shell -F '#{selection_active}' 'send-keys -X clear-selection' 'send-keys -X begin-selection'
+bind -T copy-mode-vi C-v send-keys -X rectangle-toggle \; send-keys -X begin-selection
+bind -T copy-mode-vi y send-keys -X copy-selection
+bind -T copy-mode-vi Y send-keys -X copy-end-of-line-and-cancel
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-selection-no-clear
+bind -T copy-mode-vi MouseDown1Pane select-pane \; send -X clear-selection
+bind -T copy-mode-vi c send-keys -X clear-selection
+bind -T copy-mode-vi a send-keys -X cancel
+bind -T copy-mode-vi Escape if-shell -F '#{selection_active}' 'send-keys -X clear-selection' 'send-keys -X cancel'
+
+bind -T copy-mode-vi i switch-client -T copyModeMultiKey_i
+bind -T copyModeMultiKey_i w send-keys -X select-word
+bind -T copyModeMultiKey_i W send-keys -X clear-selection \; send-keys -X previous-space \; send-keys -X begin-selection \; send-keys -X next-space-end
+bind -T copyModeMultiKey_i b send-keys -X clear-selection \; send-keys -X jump-to-backward '(' \; send-keys -X begin-selection \; send-keys -X jump-to-forward ')'
+bind -T copyModeMultiKey_i ( send-keys -X clear-selection \; send-keys -X jump-to-backward '(' \; send-keys -X begin-selection \; send-keys -X jump-to-forward ')'
+bind -T copyModeMultiKey_i ) send-keys -X clear-selection \; send-keys -X jump-to-backward '(' \; send-keys -X begin-selection \; send-keys -X jump-to-forward ')'
+bind -T copyModeMultiKey_i B send-keys -X clear-selection \; send-keys -X jump-to-backward '{' \; send-keys -X begin-selection \; send-keys -X jump-to-forward '}'
+bind -T copyModeMultiKey_i \{ send-keys -X clear-selection \; send-keys -X jump-to-backward '{' \; send-keys -X begin-selection \; send-keys -X jump-to-forward '}'
+bind -T copyModeMultiKey_i \} send-keys -X clear-selection \; send-keys -X jump-to-backward '{' \; send-keys -X begin-selection \; send-keys -X jump-to-forward '}'
+bind -T copyModeMultiKey_i [ send-keys -X clear-selection \; send-keys -X jump-to-backward '[' \; send-keys -X begin-selection \; send-keys -X jump-to-forward ']'
+bind -T copyModeMultiKey_i ] send-keys -X clear-selection \; send-keys -X jump-to-backward '[' \; send-keys -X begin-selection \; send-keys -X jump-to-forward ']'
+bind -T copyModeMultiKey_i < send-keys -X clear-selection \; send-keys -X jump-to-backward '<' \; send-keys -X begin-selection \; send-keys -X jump-to-forward '>'
+bind -T copyModeMultiKey_i > send-keys -X clear-selection \; send-keys -X jump-to-backward '<' \; send-keys -X begin-selection \; send-keys -X jump-to-forward '>'
+bind -T copyModeMultiKey_i ` send-keys -X clear-selection \; send-keys -X jump-to-backward '`' \; send-keys -X begin-selection \; send-keys -X jump-to-forward '`'
+bind -T copyModeMultiKey_i \' send-keys -X clear-selection \; send-keys -X jump-to-backward "'" \; send-keys -X begin-selection \; send-keys -X jump-to-forward "'"
+bind -T copyModeMultiKey_i \" send-keys -X clear-selection \; send-keys -X jump-to-backward '"' \; send-keys -X begin-selection \; send-keys -X jump-to-forward '"'
+bind -T copyModeMultiKey_i l send-keys -X clear-selection \; send-keys -X back-to-indentation \; send-keys -X begin-selection \; send-keys -X end-of-line \; send-keys -X cursor-left \; send-keys -X other-end
 
 # -- custom variables ----------------------------------------------------------
 
