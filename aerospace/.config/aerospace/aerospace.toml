@@ -212,6 +212,9 @@ run = 'move-node-to-workspace 3'
 [[on-window-detected]]
 if.app-id = 'com.proxyman.NSProxy'
 run = 'move-node-to-workspace 3'
+[[on-window-detected]]
+if.app-id = 'com.facebook.sonar'
+run = 'move-node-to-workspace 3'
 
 # messaging apps
 [[on-window-detected]]
