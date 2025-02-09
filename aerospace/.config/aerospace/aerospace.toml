@@ -138,10 +138,7 @@ esc = 'mode main'
 esc = ['reload-config', 'mode main']
 # reset layout
 r = ['flatten-workspace-tree', 'mode main']
-q = [
-    'layout floating tiling',
-    'mode main',
-]
+q = ['layout floating tiling', 'mode main']
 
 alt-shift-h = ['join-with left', 'mode main']
 alt-shift-j = ['join-with down', 'mode main']
@@ -212,8 +209,12 @@ run = 'move-node-to-workspace 3'
 [[on-window-detected]]
 if.app-id = 'com.proxyman.NSProxy'
 run = 'move-node-to-workspace 3'
+# flipper
 [[on-window-detected]]
 if.app-id = 'com.facebook.sonar'
+run = 'move-node-to-workspace 3'
+[[on-window-detected]]
+if.app-id = 'com.xkoji.altair'
 run = 'move-node-to-workspace 3'
 
 # messaging apps
@@ -245,7 +246,7 @@ S = ['u28d590', 'samsung', 'main']
 I = ['lg', 'main']
 
 
-1 = 'main'                      # Main monitor
+1 = 'main' # Main monitor
 # 3 = 'secondary'                 # Non-main monitor in case when there are only two monitors
 # 4 = 'built-in'                  # Case insensitive regex substring
 # 5 = '^built-in retina display$' # Case insensitive regex match
