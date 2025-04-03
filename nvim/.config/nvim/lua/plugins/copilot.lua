@@ -57,6 +57,8 @@ return {
     end
 
     local allowedWorkspaces = {
+      "DoubleSecret2",
+      "am2",
       "vision-mono-repo",
       "dotfiles"
     }
