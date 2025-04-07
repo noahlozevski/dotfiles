@@ -3,7 +3,7 @@ vim.g.maplocalleader = " "
 -- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
 local no_remap = function(lhs, rhs)
-    vim.api.nvim_set_keymap('', lhs, rhs, { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('', lhs, rhs, { noremap = true, silent = true })
 end
 
 -- no_remap("<Up>", "<Nop>")
@@ -50,7 +50,11 @@ vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
 -- formattttt
-vim.keymap.set({ 'n', 'x' }, '<leader>f', function() vim.lsp.buf.format() end)
+vim.keymap.set({ 'n', 'x' }, '<leader>f', function()
+  vim.lsp.buf.format()
+  -- theres a weird bug where after formatting, the cprev command seems to be called?
+  vim.cmd('cnext')
+end, { silent = true, noremap = true })
 -- vim.keymap.set("n", "Q", "<nop>")
 -- vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 --
