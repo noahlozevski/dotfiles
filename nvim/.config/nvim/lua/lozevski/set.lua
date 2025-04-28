@@ -41,7 +41,7 @@ vim.opt.colorcolumn = "80"
 -- global statusline
 vim.opt.laststatus = 3
 vim.wo.cursorline = true
-vim.opt.statusline = " %f %m %= %l:%c noah ♥ 🫛sean"
+vim.opt.statusline = " %f %m %= %l:%c noah 🚀"
 
 vim.opt.showmatch = true          -- Highlight matching parenthesis
 vim.opt.clipboard = 'unnamedplus' -- Copy/paste to system clipboard
