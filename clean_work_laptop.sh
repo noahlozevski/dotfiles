@@ -122,3 +122,6 @@ brazil-package-cache stop
 echo -n "Cleaning pkg cache ..." && brazil-package-cache clean --debug --days 0 --keepCacheHours 0 --percent 0 2>&1
 
 echo -n "Cleaning toolbox ..." && toolbox clean 2>&1
+
+# wipe all node_modules folders from $HOME/workplace directory
+find "$HOME/workplace" -type d -name 'node_modules' -prune -exec rm -rf '{}' +
