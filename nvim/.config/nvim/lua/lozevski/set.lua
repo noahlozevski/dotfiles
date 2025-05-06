@@ -123,3 +123,9 @@ function setTabStop(num)
     vim.opt.shiftwidth = num
 end
 
+
+vim.filetype.add({
+  filename  = { ['Podfile'] = 'ruby' },         -- Podfile
+  extension = { podspec = 'ruby' },             -- foo.podspec
+  pattern   = { ['.*%.podspec$'] = 'ruby' },    -- bar/anything.podspec
+})
