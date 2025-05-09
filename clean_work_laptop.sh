@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-set -euo pipefail
+
+set -ou pipefail
+# allow script to fail on any command
+set +e
 
 # --------------------------
 # Helper functions
@@ -125,3 +128,30 @@ echo -n "Cleaning toolbox ..." && toolbox clean 2>&1
 
 # wipe all node_modules folders from $HOME/workplace directory
 find "$HOME/workplace" -type d -name 'node_modules' -prune -exec rm -rf '{}' +
+
+# acme caches
+sudo delete "/usr/local/amazon/var/acme/cache"
+
+echo "🧹 Cleaning Xcode build & module caches…"
+rm -rf ~/Library/Developer/Xcode/DerivedData/*
+rm -rf ~/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/*
+rm -rf ~/Library/Caches/com.apple.dt.Xcode/*
+
+echo "🧹 Cleaning system clang module caches…"
+sudo find /private/var/folders -type d \
+     -path '*/C/clang/ModuleCache*' -prune \
+     -exec rm -rf {} +
+
+echo "🧹 Cleaning clangd indexes…"
+rm -rf ~/.cache/clangd
+find . -type d -path '*/.cache/clangd/index' -prune -exec rm -rf {} +
+
+echo "🧹 Cleaning ccache (if installed)…"
+rm -rf ~/.ccache
+
+echo "🧹 Cleaning CocoaPods & SwiftPM caches…"
+rm -rf ~/Library/Caches/CocoaPods
+rm -rf ~/.cocoapods/repos
+rm -rf ~/Library/Developer/Xcode/DerivedData/*/SourcePackages/*
+
+
