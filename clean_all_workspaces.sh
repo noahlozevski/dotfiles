@@ -31,7 +31,7 @@ for dir in "$WORKPLACE_DIR"/*/ ; do
                 echo "Processing src subdirectory: $src_subdir in $dir/src"
 
                 # Remove the 'build' directory inside the src subdirectory
-                rm -rf "$src_subdir/build"
+                rm -rf "$src_subdir/build/*"
                 
                 # Check if the 'rm' command was successful
                 if [ $? -ne 0 ]; then
