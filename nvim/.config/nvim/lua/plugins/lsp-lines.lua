@@ -53,7 +53,6 @@ local config = {
             [vim.diagnostic.severity.HINT] = '⚑',
         },
     },
-
 }
 vim.diagnostic.config(config)
 

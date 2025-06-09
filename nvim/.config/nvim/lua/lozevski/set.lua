@@ -31,7 +31,7 @@ vim.opt.inccommand = "nosplit"
 vim.opt.sidescroll = 1
 vim.opt.sidescrolloff = 8
 vim.opt.scrolloff = 8
--- vim.opt.signcolumn = "auto"
+vim.opt.signcolumn = "yes:1"
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 40

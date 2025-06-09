@@ -1,17 +1,18 @@
-local lsp = require('lsp-zero').preset({})
+-- local lsp = require('lsp-zero').preset({})
 
-lsp.ensure_installed({
-    -- add more servers / languages
-    'ts_ls',
-    -- 'eslint',
-    'rust_analyzer',
-    'lua_ls',
-    'clangd',
-    'efm',
-    'tailwindcss',
-})
+-- lsp.ensure_installed({
+--     -- add more servers / languages
+--     'ts_ls',
+--     -- 'eslint',
+--     'rust_analyzer',
+--     'lua_ls',
+--     'clangd',
+--     'efm',
+--     'tailwindcss',
+-- })
 
-lsp.nvim_workspace()
+-- lsp.nvim_workspace()
+--
 
 -- local cmp = require('cmp')
 -- local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -29,19 +30,19 @@ lsp.nvim_workspace()
 --     mapping = cmp_mappings
 -- })
 
-lsp.set_preferences({
-    suggest_lsp_servers = true,
-    sign_icons = {
-        error = '✘',
-        warn = '▲',
-        hint = '⚑',
-        info = '»'
-    }
-})
+-- lsp.set_preferences({
+--     suggest_lsp_servers = true,
+--     sign_icons = {
+--         error = '✘',
+--         warn = '▲',
+--         hint = '⚑',
+--         info = '»'
+--     }
+-- })
 
-local function on_attach(client, bufnr)
-    lsp.default_keymaps({ buffer = bufnr })
-end
+-- local function on_attach(client, bufnr)
+--     lsp.default_keymaps({ buffer = bufnr })
+-- end
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
@@ -68,7 +69,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.api.nvim_create_user_command('Dclist', vim.diagnostic.setqflist, {})
     end,
 })
-lsp.on_attach = on_attach
+-- lsp.on_attach = on_attach
 
 -- vim.diagnostic.config({
 --   -- virtual_text = {
@@ -82,8 +83,8 @@ lsp.on_attach = on_attach
 -- Set up lspconfig for each server
 --   local capabilities =
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-local lspconfig = require('lspconfig')
+-- local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- local lspconfig = require('lspconfig')
 -- local configured_servers = {
 --     -- 'ts_ls',
 --     -- 'eslint',
@@ -102,27 +103,27 @@ local lspconfig = require('lspconfig')
 --     -- }
 -- end
 
-local function filter(arr, fn)
-    if type(arr) ~= "table" then
-        return arr
-    end
+-- local function filter(arr, fn)
+--     if type(arr) ~= "table" then
+--         return arr
+--     end
+--
+--     local filtered = {}
+--     for k, v in pairs(arr) do
+--         if fn(v, k, arr) then
+--             table.insert(filtered, v)
+--         end
+--     end
+--
+--     return filtered
+-- end
 
-    local filtered = {}
-    for k, v in pairs(arr) do
-        if fn(v, k, arr) then
-            table.insert(filtered, v)
-        end
-    end
-
-    return filtered
-end
-
-local function filterReactDTS(value)
-    return string.match(value.targetUri, '%.d.ts') == nil
-end
+-- local function filterReactDTS(value)
+--     return string.match(value.targetUri, '%.d.ts') == nil
+-- end
 
 --- warning: dont override this unless necessary to debug
-local default_handlers = vim.lsp.handlers
+-- local default_handlers = vim.lsp.handlers
 -- local times = 0
 -- for handler, fallback in pairs(vim.lsp.handlers) do
 --     default_handlers[handler] = function(err, result, method, ...)
@@ -144,235 +145,242 @@ local default_handlers = vim.lsp.handlers
 -- sql brings in some whacky commands
 -- this disables this
 -- search for sql.vim in :scriptnames
-vim.g.omni_sql_no_default_maps = false
+-- vim.g.omni_sql_no_default_maps = false
 
 require("mason").setup()
-require("mason-lspconfig").setup_handlers {
-    -- The first entry (without a key) will be the default handler
-    -- and will be called for each installed server that doesn't have
-    -- a dedicated handler.
-    -- default handler (optional)
-    function(server_name)
-        require("lspconfig")[server_name].setup {
-            on_attach = on_attach,
-            capabilities = capabilities,
-            -- handlers = default_handlers
-        }
-    end,
-    -- Next, you can provide a dedicated handler for specific servers.
-    -- For example, a handler override for the `rust_analyzer`:
-    ["clangd"] = function()
-        lspconfig.clangd.setup {
-            on_attach = on_attach,
-            capabilities = capabilities,
-            cmd = {
-                "clangd",
-                "--offset-encoding=utf-16",
-            },
-            -- handlers = default_handlers
-        }
-    end,
-    ["jdtls"] = function()
-        lspconfig.jdtls.setup {
-            autostart = true,
-            -- handlers = default_handlers
-        }
-        -- pass on configing this plugin, this is triggered when opening java files
-    end,
-    ["ts_ls"] = function()
-        -- for handler, v in pairs(vim.lsp.handlers) do
-        --     vim.notify(handler)
-        --     vim.lsp.handlers[handler] = function(err, result, method, ...)
-        --         vim.notify('hello')
-        --         vim.notify(vim.inspect(result))
-        --         vim.lsp.handlers[handler](err, result, method, ...)
-        --     end
-        -- end
+require("mason-lspconfig").setup({
+    ensure_installed = {
+        'lua_ls',
+        'ts_ls',
+    },
+})
 
-        lspconfig.ts_ls.setup {
-            on_attach = on_attach,
-            capabilities = capabilities,
-            filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact',
-                'typescript.tsx', 'html' },
-            handlers = {
-                -- ['textDocument/declaration'] = function(err, result, method, ...)
-                -- end,
-                ['textDocument/declaration'] = function(err, result, method, ...)
-                    vim.lsp.handlers['workspaceSymbol/resolve'](err, result, method, ...)
-                    if vim.tbl_islist(result) and #result > 1 then
-                        local filtered_result = filter(result, filterReactDTS)
-                        return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
-                    end
-                end,
-                ['textDocument/definition'] = function(err, result, method, ...)
-                    if vim.tbl_islist(result) and #result > 1 then
-                        local filtered_result = filter(result, filterReactDTS)
-                        return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
-                    end
-                    vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
-                end
-
-                -- handlers = default_handlers
-            }
-        }
-    end,
-    -- ["eslint"] = function()
-    --   lspconfig.eslint.setup {
-    --     on_attach = on_attach,
-    --     capabilities = capabilities,
-    --     filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact',
-    --       'typescript.tsx' },
-    --     -- handlers = default_handlers
-    --   }
-    -- end,
-    -- zig config
-    ["zls"] = function()
-        local auto_format_on_save = false
-        -- this is brought in by the vim-zig plugin dependency from the zig lsp
-        vim.g.zig_fmt_autosave = auto_format_on_save
-
-        local zig_config = {
-            on_attach = on_attach,
-            capabilities = capabilities,
-            settings = {
-                enable_autofix = auto_format_on_save,
-                enable_build_on_save = false
-            }
-        }
-
-        -- overrides for zvm
-        local zvm_dir = vim.env.HOME .. '/.zvm'
-        if vim.fn.isdirectory(zvm_dir) then
-            zig_config = vim.tbl_deep_extend('force', zig_config, {
-                cmd = {
-                    -- join the home path with /.zvm
-                    zvm_dir .. '/bin/zls'
-                },
-                settings = {
-                    zig_lib_path = zvm_dir .. '/master/lib',
-                    zig_exe_path = zvm_dir .. '/bin/zig',
-                    -- build_runner_path = '/Users/noahlozevski/Library/Caches/zls/build_runner_0.12.0.zig',
-                    -- global_cache_path = '/Users/noahlozevski/Library/Caches/zls',
-                    -- build_runner_global_cache_path = '/Users/noahlozevski/.cache/zig',
-                }
-            })
-        end
-
-        lspconfig.zls.setup(zig_config)
-    end,
-    ["lua_ls"] = function()
-        -- Fixes the undefined vim global annoyance
-        lspconfig.lua_ls.setup {
-            settings = {
-                Lua = {
-                    diagnostics = {
-                        -- Get the language server to recognize the `vim` global
-                        globals = {
-                            'vim',
-                            'augroup',
-                            'require'
-                        },
-                    },
-                    telemetry = {
-                        enable = false,
-                    },
-                },
-            },
-            -- handlers = default_handlers
-        }
-    end,
-    ["efm"] = function()
-        -- local eslint = require('efmls-configs.linters.eslint_d')
-        -- choose prettier_d if it is runnable / accessible
-        local prettier
-        if vim.fn.executable('prettierd') == 1 then
-            prettier = require('efmls-configs.formatters.prettier_d')
-        else
-            prettier = require('efmls-configs.formatters.prettier')
-        end
-
-        local eslint
-        if vim.fn.executable('eslint_d') == 1 then
-            eslint = require('efmls-configs.formatters.eslint_d')
-        else
-            eslint = require('efmls-configs.formatters.eslint')
-        end
-
-        -- EFM formatting language specs
-        local languages = require('efmls-configs.defaults').languages()
-
-        -- default to using the other eslint server
-        local servers = { prettier, eslint }
-
-        languages = vim.tbl_extend('force', languages, {
-            typescript = servers,
-            ["typescript.jsx"] = servers,
-            typescriptreact = servers,
-            javascript = servers,
-            ["javascript.jsx"] = servers,
-            javascriptreact = servers,
-            json = servers,
-            markdown = servers,
-            html = servers,
-        })
-
-        -- need to remove the stupid defaults efm adds on top of prettier that conflict with the settings defined in repo-specific prettier configs
-        -- personal neovim settings should not be mixed with lsp settings
-        local function remove_lsp_format_defaults(format_cmd)
-            -- efmls will pass any of these LSP formatting options from the neovim config here:
-            -- https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#formattingOptions
-            -- add more properties as these become defined / cause problems
-            local strs = {
-                "tabSize",
-                -- "insertSpaces",
-                -- "trimTrailingWhitespace",
-                -- "insertFinalNewLine",
-                -- "trimFinalNewlines"
-            }
-
-            local result = format_cmd
-            for _, prop in ipairs(strs) do
-                if string.find(result, prop) then
-                    result = string.gsub(result, "${[%S]-" .. prop .. "[%S]-}", "")
-                end
-            end
-            return result
-        end
-
-        for lang, lang_config in pairs(languages) do
-            for _, fmt_config in pairs(lang_config) do
-                local before = fmt_config["formatCommand"]
-                if before ~= nil then
-                    local updated_cmd = remove_lsp_format_defaults(before)
-                    -- if updated_cmd ~= before then
-                    --     vim.print("Lang: " .. lang .. "Changed command before: " .. before)
-                    --     vim.print("after: " .. updated_cmd)
-                    --     vim.print("--")
-                    -- end
-                    if updated_cmd ~= nil and updated_cmd ~= "" then
-                        fmt_config["formatCommand"] = updated_cmd
-                    end
-                end
-            end
-        end
-
-        -- manual lsp config must come after mason-lspconfig
-        -- EFM for eslint / prettier / formatting stuff
-        lspconfig.efm.setup {
-            filetypes = vim.tbl_keys(languages),
-            init_options = {
-                documentFormatting = true,
-                documentRangeFormatting = true,
-            },
-            settings = {
-                rootMarkers = { ".git/" },
-                languages = languages
-            },
-            -- handlers = default_handlers
-        }
-    end,
-}
-
+-- require("mason-lspconfig").setup_handlers {
+--     -- The first entry (without a key) will be the default handler
+--     -- and will be called for each installed server that doesn't have
+--     -- a dedicated handler.
+--     -- default handler (optional)
+--     function(server_name)
+--         require("lspconfig")[server_name].setup {
+--             on_attach = on_attach,
+--             capabilities = capabilities,
+--             -- handlers = default_handlers
+--         }
+--     end,
+--     -- Next, you can provide a dedicated handler for specific servers.
+--     -- For example, a handler override for the `rust_analyzer`:
+--     ["clangd"] = function()
+--         lspconfig.clangd.setup {
+--             on_attach = on_attach,
+--             capabilities = capabilities,
+--             cmd = {
+--                 "clangd",
+--                 "--offset-encoding=utf-16",
+--             },
+--             -- handlers = default_handlers
+--         }
+--     end,
+--     ["jdtls"] = function()
+--         lspconfig.jdtls.setup {
+--             autostart = true,
+--             -- handlers = default_handlers
+--         }
+--         -- pass on configing this plugin, this is triggered when opening java files
+--     end,
+--     ["ts_ls"] = function()
+--         -- for handler, v in pairs(vim.lsp.handlers) do
+--         --     vim.notify(handler)
+--         --     vim.lsp.handlers[handler] = function(err, result, method, ...)
+--         --         vim.notify('hello')
+--         --         vim.notify(vim.inspect(result))
+--         --         vim.lsp.handlers[handler](err, result, method, ...)
+--         --     end
+--         -- end
+--
+--         lspconfig.ts_ls.setup {
+--             on_attach = on_attach,
+--             capabilities = capabilities,
+--             filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact',
+--                 'typescript.tsx', 'html' },
+--             handlers = {
+--                 -- ['textDocument/declaration'] = function(err, result, method, ...)
+--                 -- end,
+--                 ['textDocument/declaration'] = function(err, result, method, ...)
+--                     vim.lsp.handlers['workspaceSymbol/resolve'](err, result, method, ...)
+--                     if vim.tbl_islist(result) and #result > 1 then
+--                         local filtered_result = filter(result, filterReactDTS)
+--                         return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
+--                     end
+--                 end,
+--                 ['textDocument/definition'] = function(err, result, method, ...)
+--                     if vim.tbl_islist(result) and #result > 1 then
+--                         local filtered_result = filter(result, filterReactDTS)
+--                         return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
+--                     end
+--                     vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
+--                 end
+--
+--                 -- handlers = default_handlers
+--             }
+--         }
+--     end,
+--     -- ["eslint"] = function()
+--     --   lspconfig.eslint.setup {
+--     --     on_attach = on_attach,
+--     --     capabilities = capabilities,
+--     --     filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact',
+--     --       'typescript.tsx' },
+--     --     -- handlers = default_handlers
+--     --   }
+--     -- end,
+--     -- zig config
+--     ["zls"] = function()
+--         local auto_format_on_save = false
+--         -- this is brought in by the vim-zig plugin dependency from the zig lsp
+--         vim.g.zig_fmt_autosave = auto_format_on_save
+--
+--         local zig_config = {
+--             on_attach = on_attach,
+--             capabilities = capabilities,
+--             settings = {
+--                 enable_autofix = auto_format_on_save,
+--                 enable_build_on_save = false
+--             }
+--         }
+--
+--         -- overrides for zvm
+--         local zvm_dir = vim.env.HOME .. '/.zvm'
+--         if vim.fn.isdirectory(zvm_dir) then
+--             zig_config = vim.tbl_deep_extend('force', zig_config, {
+--                 cmd = {
+--                     -- join the home path with /.zvm
+--                     zvm_dir .. '/bin/zls'
+--                 },
+--                 settings = {
+--                     zig_lib_path = zvm_dir .. '/master/lib',
+--                     zig_exe_path = zvm_dir .. '/bin/zig',
+--                     -- build_runner_path = '/Users/noahlozevski/Library/Caches/zls/build_runner_0.12.0.zig',
+--                     -- global_cache_path = '/Users/noahlozevski/Library/Caches/zls',
+--                     -- build_runner_global_cache_path = '/Users/noahlozevski/.cache/zig',
+--                 }
+--             })
+--         end
+--
+--         lspconfig.zls.setup(zig_config)
+--     end,
+--     ["lua_ls"] = function()
+--         -- Fixes the undefined vim global annoyance
+--         lspconfig.lua_ls.setup {
+--             settings = {
+--                 Lua = {
+--                     diagnostics = {
+--                         -- Get the language server to recognize the `vim` global
+--                         globals = {
+--                             'vim',
+--                             'augroup',
+--                             'require'
+--                         },
+--                     },
+--                     telemetry = {
+--                         enable = false,
+--                     },
+--                 },
+--             },
+--             -- handlers = default_handlers
+--         }
+--     end,
+--     ["efm"] = function()
+--         -- local eslint = require('efmls-configs.linters.eslint_d')
+--         -- choose prettier_d if it is runnable / accessible
+--         local prettier
+--         if vim.fn.executable('prettierd') == 1 then
+--             prettier = require('efmls-configs.formatters.prettier_d')
+--         else
+--             prettier = require('efmls-configs.formatters.prettier')
+--         end
+--
+--         local eslint
+--         if vim.fn.executable('eslint_d') == 1 then
+--             eslint = require('efmls-configs.formatters.eslint_d')
+--         else
+--             eslint = require('efmls-configs.formatters.eslint')
+--         end
+--
+--         -- EFM formatting language specs
+--         local languages = require('efmls-configs.defaults').languages()
+--
+--         -- default to using the other eslint server
+--         local servers = { prettier, eslint }
+--
+--         languages = vim.tbl_extend('force', languages, {
+--             typescript = servers,
+--             ["typescript.jsx"] = servers,
+--             typescriptreact = servers,
+--             javascript = servers,
+--             ["javascript.jsx"] = servers,
+--             javascriptreact = servers,
+--             json = servers,
+--             markdown = servers,
+--             html = servers,
+--         })
+--
+--         -- need to remove the stupid defaults efm adds on top of prettier that conflict with the settings defined in repo-specific prettier configs
+--         -- personal neovim settings should not be mixed with lsp settings
+--         local function remove_lsp_format_defaults(format_cmd)
+--             -- efmls will pass any of these LSP formatting options from the neovim config here:
+--             -- https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#formattingOptions
+--             -- add more properties as these become defined / cause problems
+--             local strs = {
+--                 "tabSize",
+--                 -- "insertSpaces",
+--                 -- "trimTrailingWhitespace",
+--                 -- "insertFinalNewLine",
+--                 -- "trimFinalNewlines"
+--             }
+--
+--             local result = format_cmd
+--             for _, prop in ipairs(strs) do
+--                 if string.find(result, prop) then
+--                     result = string.gsub(result, "${[%S]-" .. prop .. "[%S]-}", "")
+--                 end
+--             end
+--             return result
+--         end
+--
+--         for lang, lang_config in pairs(languages) do
+--             for _, fmt_config in pairs(lang_config) do
+--                 local before = fmt_config["formatCommand"]
+--                 if before ~= nil then
+--                     local updated_cmd = remove_lsp_format_defaults(before)
+--                     -- if updated_cmd ~= before then
+--                     --     vim.print("Lang: " .. lang .. "Changed command before: " .. before)
+--                     --     vim.print("after: " .. updated_cmd)
+--                     --     vim.print("--")
+--                     -- end
+--                     if updated_cmd ~= nil and updated_cmd ~= "" then
+--                         fmt_config["formatCommand"] = updated_cmd
+--                     end
+--                 end
+--             end
+--         end
+--
+--         -- manual lsp config must come after mason-lspconfig
+--         -- EFM for eslint / prettier / formatting stuff
+--         lspconfig.efm.setup {
+--             filetypes = vim.tbl_keys(languages),
+--             init_options = {
+--                 documentFormatting = true,
+--                 documentRangeFormatting = true,
+--             },
+--             settings = {
+--                 rootMarkers = { ".git/" },
+--                 languages = languages
+--             },
+--             -- handlers = default_handlers
+--         }
+--     end,
+-- }
+--
 
 local function get_store_kit_lsp_path()
     local isMac = vim.loop.os_uname().sysname == "Darwin"
@@ -419,7 +427,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- run work specific lsp setup
 pcall(require, 'work.lsp')
 
-lsp.setup()
+-- lsp.setup()
 
 ---gets the lsp of a given server name attached to the current buffer
 ---@param server_name string
