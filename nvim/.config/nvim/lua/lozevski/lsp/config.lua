@@ -47,7 +47,9 @@
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = args.buf, desc = "LSP: Hover" })
+        vim.keymap.set('n', 'K', function()
+          vim.lsp.buf.hover({ border = "rounded", max_height = 25, max_width = 120 })
+        end, { buffer = args.buf, desc = "LSP: Hover" })
         vim.keymap.set('i', '<C-h>', vim.lsp.buf.signature_help, { buffer = args.buf, desc = "LSP: Signature help" })
         vim.keymap.set('n', 'gC', vim.lsp.buf.declaration, { buffer = args.buf, desc = "LSP: Go to declaration" })
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = args.buf, desc = "LSP: Go to definition" })
