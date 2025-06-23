@@ -453,6 +453,102 @@ function get_lsp(server_name)
     end
 end
 
+-- efm setup
+local function efm_setup()
+  -- still uses lspconfig, need to use the newer neovim apis though if possible
+  local lspconfig = require('lspconfig')
+  -- local eslint = require('efmls-configs.linters.eslint_d')
+  -- choose prettier_d if it is runnable / accessible
+  local prettier
+  if vim.fn.executable('prettierd') == 1 then
+    prettier = require('efmls-configs.formatters.prettier_d')
+  else
+    prettier = require('efmls-configs.formatters.prettier')
+  end
+
+  local eslint
+  if vim.fn.executable('eslint_d') == 1 then
+    eslint = require('efmls-configs.formatters.eslint_d')
+  else
+    eslint = require('efmls-configs.formatters.eslint')
+  end
+
+  -- EFM formatting language specs
+  local languages = require('efmls-configs.defaults').languages()
+
+  -- default to using the other eslint server
+  local servers = { prettier, eslint }
+
+  languages = vim.tbl_extend('force', languages, {
+    typescript = servers,
+    ["typescript.jsx"] = servers,
+    typescriptreact = servers,
+    javascript = servers,
+    ["javascript.jsx"] = servers,
+    javascriptreact = servers,
+    json = servers,
+    markdown = servers,
+    html = servers,
+  })
+
+  -- need to remove the stupid defaults efm adds on top of prettier that conflict with the settings defined in repo-specific prettier configs
+  -- personal neovim settings should not be mixed with lsp settings
+  local function remove_lsp_format_defaults(format_cmd)
+    -- efmls will pass any of these LSP formatting options from the neovim config here:
+    -- https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#formattingOptions
+    -- add more properties as these become defined / cause problems
+    local strs = {
+      "tabSize",
+      -- "insertSpaces",
+      -- "trimTrailingWhitespace",
+      -- "insertFinalNewLine",
+      -- "trimFinalNewlines"
+    }
+
+    local result = format_cmd
+    for _, prop in ipairs(strs) do
+      if string.find(result, prop) then
+        result = string.gsub(result, "${[%S]-" .. prop .. "[%S]-}", "")
+      end
+    end
+    return result
+  end
+
+  for lang, lang_config in pairs(languages) do
+    for _, fmt_config in pairs(lang_config) do
+      local before = fmt_config["formatCommand"]
+      if before ~= nil then
+        local updated_cmd = remove_lsp_format_defaults(before)
+        -- if updated_cmd ~= before then
+        --     vim.print("Lang: " .. lang .. "Changed command before: " .. before)
+        --     vim.print("after: " .. updated_cmd)
+        --     vim.print("--")
+        -- end
+        if updated_cmd ~= nil and updated_cmd ~= "" then
+          fmt_config["formatCommand"] = updated_cmd
+        end
+      end
+    end
+  end
+
+  -- manual lsp config must come after mason-lspconfig
+  -- EFM for eslint / prettier / formatting stuff
+  lspconfig.efm.setup {
+    filetypes = vim.tbl_keys(languages),
+    init_options = {
+      documentFormatting = true,
+      documentRangeFormatting = true,
+    },
+    settings = {
+      rootMarkers = { ".git/" },
+      languages = languages
+    },
+    -- handlers = default_handlers
+  }
+end
+-- efm_setup()
+
 return {
     on_attach = on_attach
 }
+
