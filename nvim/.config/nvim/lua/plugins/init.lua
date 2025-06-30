@@ -1,3 +1,11 @@
+-- Helper that only runs a command if it’s defined:
+local function safe_cmd(cmd)
+  -- vim.fn.exists(':'..name) returns 2 if a user Ex command exists
+  if vim.fn.exists(':' .. cmd) == 2 then
+    vim.cmd(cmd)
+  end
+end
+
 return {
   {
     'dstein64/vim-startuptime',
@@ -56,11 +64,13 @@ return {
     },
     opts = {
       notify_on_error = false,
-      format_on_save = function(bufnr)
+      format_after_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
         local disable_filetypes = { c = true, cpp = true }
+        -- run the command LspEslintFixAll to fix linting issues (if it is available)
+        safe_cmd('LspEslintFixAll')
         return {
           timeout_ms = 500,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],

@@ -456,14 +456,15 @@ bind - split-window -v
 unbind '"'
 unbind %
 
-# # reload config file (change file location to your the tmux.conf you want to use)
-bind r source-file ~/.config/tmux/tmux.conf
+# Clears current pane's scrollback buffer
+bind j clear-history
+# Clears current pane's scrollback buffer (and buffer)
+bind k clear-history \; send-keys C-l
 
 # open the whole pane's scrollback buffer in neovim
 bind-key C-v split-window 'tmux capture-pane -t:.- -Jp -S- | nvim -'
 
-# clear history
-bind j clear-history
+# clear current pane's scrollback buffer and buffer (bound to leader j)
 
 # increase scrollback buffer
 set-option -g history-limit 1000000
