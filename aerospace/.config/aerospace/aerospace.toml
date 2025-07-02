@@ -102,12 +102,22 @@ alt-1 = 'workspace 1' # browser, main
 alt-2 = 'workspace 2' # terminal
 alt-3 = 'workspace 3' # ide
 alt-4 = 'workspace 4' # messaging
+alt-5 = 'workspace 5' # extra
+alt-6 = 'workspace 6' # extra
+alt-7 = 'workspace 7' # extra
+alt-8 = 'workspace 8' # extra
+alt-9 = 'workspace 9' # extra
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 alt-shift-1 = 'move-node-to-workspace 1'
 alt-shift-2 = 'move-node-to-workspace 2'
 alt-shift-3 = 'move-node-to-workspace 3'
 alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-5 = 'move-node-to-workspace 5'
+alt-shift-6 = 'move-node-to-workspace 6'
+alt-shift-7 = 'move-node-to-workspace 7'
+alt-shift-8 = 'move-node-to-workspace 8'
+alt-shift-9 = 'move-node-to-workspace 9'
 
 alt-shift-f = 'fullscreen'
 
@@ -146,9 +156,9 @@ alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
 # auto floats
-[[on-window-detected]]
-if.app-name-regex-substring = 'simulator'
-run = 'layout floating'
+# [[on-window-detected]]
+# if.app-name-regex-substring = 'simulator'
+# run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.apple.FaceTime'
 run = 'layout floating'
@@ -244,15 +254,16 @@ run = 'move-node-to-workspace 4'
 check-further-callbacks = true
 run = 'layout floating'
 
-[workspace-to-monitor-force-assignment]
-T = ['lg', 'main']
-M = ['u28d590', 'samsung', 'main']
-B = ['lg', 'main']
-S = ['u28d590', 'samsung', 'main']
-I = ['lg', 'main']
+# [workspace-to-monitor-force-assignment]
+# 1 = ['built-in', 'lg', 'main']
+# T = ['lg', 'main']
+# M = ['u28d590', 'samsung', 'main']
+# B = ['lg', 'main']
+# S = ['u28d590', 'samsung', 'main']
+# I = ['lg', 'main']
 
 
-1 = 'main' # Main monitor
+# 1 = 'main' # Main monitor
 # 3 = 'secondary'                 # Non-main monitor in case when there are only two monitors
 # 4 = 'built-in'                  # Case insensitive regex substring
 # 5 = '^built-in retina display$' # Case insensitive regex match
