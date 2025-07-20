@@ -1,48 +1,4 @@
 {
     "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/specification/refs/heads/main/schema/schema.json",
-    "mcpServers": {
-        "memory": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-memory@latest"
-            ]
-        },
-        "filesystem": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-filesystem@latest",
-                "/Users/noahlozevski/code",
-                "/Users/noahlozevski/dotfiles"
-            ]
-        },
-        "sequential-thinking": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-sequential-thinking@latest"
-            ]
-        },
-        "webresearch": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@mzxrai/mcp-webresearch"
-            ]
-        },
-        "git": {
-            "command": "uvx",
-            "args": [
-                "mcp-server-git"
-            ]
-        },
-        "mcpx": {
-            "command": "npx",
-            "args": [
-                "@dylibso/mcpx",
-                "--yes"
-            ]
-        }
-    }
+    "mcpServers": {}
 }
