@@ -1,4 +1,6 @@
 cpus: 3
 memory: 8GiB
+additional_directories:
+    - path: /Volumes
 vmType: vz
 rosetta: true
