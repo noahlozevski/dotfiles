@@ -2,5 +2,7 @@ cpus: 3
 memory: 8GiB
 additional_directories:
     - path: /Volumes
+    - path: /Volumes/workplace
+    - path: /Users/nlozevsk/brazil-pkg-cache
 vmType: vz
 rosetta: true
