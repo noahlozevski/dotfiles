@@ -178,6 +178,9 @@ cleanup_jetbrains_pip_misc() {
 }
 
 cleanup_gradle_brazilpkg() {
+  log "[BrazilPKG] Stopping package cache daemons.."
+  brazil-package-cache stop
+  brazil-wire-ctl stop
   local items=(
     "$HOME/.gradle/daemon"
     "$HOME/.gradle/brazil-gradle-dists"
@@ -196,6 +199,10 @@ cleanup_gradle_brazilpkg() {
   done
   log "[BrazilPKG] Cleaning pkg cache"
   rm -rf ~/brazil-pkg-cache/packages
+  brazil-package-cache clean --days=0 --debug
+  update_progress 5 100
+  log "[BrazilPKG] Cleaning brazil-wire-ctl cache"
+  brazil-wire-ctl clean-cache
   update_progress 5 100
 }
 
@@ -205,9 +212,6 @@ cleanup_node_js_expo() {
   ((i++)); if command -v yarn &>/dev/null; then log "[Node] yarn cache clean"; yarn cache clean --force; else log "[Node] yarn not found"; fi; update_progress 6 $((i*100/total))
   ((i++)); if command -v watchman &>/dev/null; then log "[Watchman] clearing"; watchman watch-del-all || true; watchman shutdown-server || true; else log "[Watchman] not installed"; fi; update_progress 6 $((i*100/total))
   ((i++)); TMPDIR=${TMPDIR:-/tmp}; log "[Node] deleting tmp caches"; rm -rf "$TMPDIR"/metro-* "$TMPDIR"/haste-map-* "$TMPDIR"/react-*; update_progress 6 $((i*100/total))
-  ((i++)); log "[Expo] deleting ~/.expo"; rm -rf "$HOME/.expo"; update_progress 6 $((i*100/total))
-  ((i++)); log "[Expo] deleting ~/.expo/cache"; rm -rf "$HOME/.expo/cache"; update_progress 6 $((i*100/total))
-  ((i++)); log "[Expo] deleting ~/.expo-shared"; rm -rf "$HOME/.expo-shared"; update_progress 6 $((i*100/total))
 }
 
 cleanup_downloads() {
