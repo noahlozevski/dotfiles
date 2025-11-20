@@ -200,6 +200,14 @@ run = 'move-node-to-workspace 2'
 [[on-window-detected]]
 if.app-name-regex-substring = 'simulator'
 run = 'move-node-to-workspace 2'
+[[on-window-detected]]
+if.app-id = 'com.google.chrome.for.testing'
+run = 'move-node-to-workspace 2'
+[[on-window-detected]]
+if.window-title-regex-substring = 'strudel'
+run = 'move-node-to-workspace 2'
+
+
 
 # ide's
 [[on-window-detected]]
