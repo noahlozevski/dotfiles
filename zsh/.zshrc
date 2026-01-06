@@ -201,4 +201,6 @@ export PATH="$PATH:$HOME/.zvm/bin"
 export PATH="$PATH:$ZVM_INSTALL"
 
 
-source ~/.zshrc.secret
+if [ -f ~/.zshrc.secret ]; then
+  source ~/.zshrc.secret
+fi
