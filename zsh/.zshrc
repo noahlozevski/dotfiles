@@ -204,3 +204,15 @@ export PATH="$PATH:$ZVM_INSTALL"
 if [ -f ~/.zshrc.secret ]; then
   source ~/.zshrc.secret
 fi
+
+if [ -f ~/.local/bin/mise ]; then
+  eval "$(/Users/noahlozevski/.local/bin/mise activate zsh)"
+fi
+
+server() {
+  if [[ -z $IS_SERVER ]]; then
+    echo "Not a server"
+    return
+  fi
+  echo "Server"
+}
