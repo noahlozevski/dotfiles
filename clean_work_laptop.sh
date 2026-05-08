@@ -10,6 +10,22 @@ set +e
 LOG_FILE="$HOME/cleanup.log"
 : >"$LOG_FILE"
 
+# Delete app/ipa items in Downloads older than this many days
+DOWNLOADS_RETENTION_DAYS=30
+
+# Strict media cleanup for screenshots/screen recordings
+SCREEN_MEDIA_PATHS=(
+  "$HOME/Downloads"
+  "$HOME/Desktop"
+)
+SCREEN_MEDIA_PATTERNS=(
+  "*Screen\ Recording*"
+  "*Screen\ Shot*"
+  "*Screenshot*"
+  "*Simulator\ Screen\ Recording*"
+  "*Simulator\ Screenshot*"
+)
+
 TASKS=(
   "Slack Logs"
   "Xcode Caches"
@@ -22,6 +38,8 @@ TASKS=(
   "Homebrew & Toolbox"
   "Workspaces & ACME"
   "Clang & ccache"
+  "Heavy cache dirs"
+  "Screenshots/recordings"
 )
 
 NUM_TASKS=${#TASKS[@]}
@@ -84,6 +102,45 @@ delete_all_of_file_type() {
   find "$path" -type f -name "*.$ext" -print -exec rm -v {} \; | while read line; do
     log "[${FUNCNAME[0]}] $line"
   done
+}
+
+# Delete old files/directories matching a pattern from a given root path.
+delete_old_file_type() {
+  local kind=$1 path=$2 pattern=$3 age_days=$4
+  while IFS= read -r -d '' item; do
+    log "[${FUNCNAME[0]}] Deleting ${item}"
+    rm -rf "$item"
+  done < <(find "$path" -type "$kind" -name "$pattern" -mtime +"$age_days" -print0)
+}
+
+# Delete screenshot/recording media files from configured locations.
+delete_media_screenshots() {
+  local item ext total_deleted=0
+  for item in "$@"; do
+    if [ ! -d "$item" ]; then
+      continue
+    fi
+    for pattern in "${SCREEN_MEDIA_PATTERNS[@]}"; do
+      while IFS= read -r -d '' match; do
+        # shellcheck disable=SC2034
+        ext="${match##*.}"
+        ext="${ext,,}"
+        case " $ext " in
+          " png "|" jpg "|" jpeg "|" heic "|" gif "|" mov "|" mp4 "|" m4v "|" webm "|" bmp "|" tif "|" tiff ")
+            if [ -e "$match" ]; then
+              log "[${FUNCNAME[0]}] Deleting ${match}"
+              rm -f "$match"
+              ((total_deleted++))
+            fi
+            ;;
+          *)
+            :
+            ;;
+        esac
+      done < <(find "$item" -type f -iname "$pattern" -print0)
+    done
+  done
+  log "[${FUNCNAME[0]}] Total items removed: $total_deleted"
 }
 
 run_task() {
@@ -215,12 +272,19 @@ cleanup_node_js_expo() {
 }
 
 cleanup_downloads() {
-  local total=5 i=0
+  local total=6 i=0
   ((i++)); log "[Downloads] remove >500MB"; remove_directories_greater_than_mb 500 "$HOME/Library/Caches"; update_progress 7 $((i*100/total))
   ((i++)); log "[Downloads] remove >100MB"; remove_directories_greater_than_mb 100 "$HOME/Library/Logs"; update_progress 7 $((i*100/total))
   ((i++)); log "[Downloads] delete *.apk"; delete_all_of_file_type apk "$HOME/Downloads"; update_progress 7 $((i*100/total))
-  ((i++)); log "[Downloads] delete *.ipa"; delete_all_of_file_type ipa "$HOME/Downloads"; update_progress 7 $((i*100/total))
+  ((i++)); log "[Downloads] delete old *.ipa (> $DOWNLOADS_RETENTION_DAYS days)"; delete_old_file_type f "$HOME/Downloads" "*.ipa" "$DOWNLOADS_RETENTION_DAYS"; update_progress 7 $((i*100/total))
+  ((i++)); log "[Downloads] delete old .app bundles (> $DOWNLOADS_RETENTION_DAYS days)"; delete_old_file_type d "$HOME/Downloads" "*.app" "$DOWNLOADS_RETENTION_DAYS"; update_progress 7 $((i*100/total))
   ((i++)); log "[Downloads] delete *.dmg"; delete_all_of_file_type dmg "$HOME/Downloads"; update_progress 7 $((i*100/total))
+}
+
+cleanup_screenshots_and_recordings() {
+  log "[Screenshots/recordings] deleting screenshot/screen recording media from Downloads + Desktop"
+  delete_media_screenshots "${SCREEN_MEDIA_PATHS[@]}"
+  update_progress 12 100
 }
 
 cleanup_brew_toolbox() {
@@ -234,6 +298,32 @@ cleanup_workspaces_node_modules_acme() {
   ((i++)); log "[Workspaces] clean_all_workspaces.sh"; ./clean_all_workspaces.sh; update_progress 9 $((i*100/total))
   ((i++)); log "[Workspaces] deleting node_modules"; find "$HOME/workplace" -type d -name 'node_modules' -prune -exec rm -rfv '{}' +; update_progress 9 $((i*100/total))
   ((i++)); log "[ACME] deleting cache"; sudo rm -rf "/usr/local/amazon/var/acme/cache"; update_progress 9 $((i*100/total))
+}
+
+cleanup_heavy_cache_dirs() {
+  local dirs=(
+    "$HOME/Library/Caches/typescript"
+    "$HOME/Library/Caches/dotslash"
+    "$HOME/Library/Caches/lima"
+    "$HOME/Library/Caches/com.apple.amp.itmstransporter"
+    "$HOME/Library/Caches/com.apple.TransporterApp"
+    "$HOME/Library/Caches/pnpm"
+    "$HOME/Library/Caches/node-gyp"
+    "$HOME/Library/Caches/Firefox"
+    "$HOME/.cache/jdtls"
+    "$HOME/.cache/uv"
+    "$HOME/.cache/tunnel"
+    "$HOME/.cache/node"
+    "$HOME/.cache/chrome-devtools-mcp"
+  )
+
+  local total=${#dirs[@]}
+  local i=0
+  for i in "${!dirs[@]}"; do
+    log "[Heavy caches] deleting ${dirs[i]}"
+    rm -rf "${dirs[i]}"
+    update_progress 11 $(((i+1)*100/total))
+  done
 }
 
 cleanup_clang_caches() {
@@ -257,6 +347,8 @@ run_task 7  "Downloads & Logs"          cleanup_downloads            &
 run_task 8  "Homebrew & Toolbox"        cleanup_brew_toolbox         &
 run_task 9  "Workspaces & ACME"         cleanup_workspaces_node_modules_acme &
 run_task 10 "Clang & ccache"            cleanup_clang_caches         &
+run_task 11 "Heavy cache dirs"          cleanup_heavy_cache_dirs     &
+run_task 12 "Screenshots/recordings"    cleanup_screenshots_and_recordings &
 
 wait
 
