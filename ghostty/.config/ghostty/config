@@ -28,3 +28,6 @@ window-colorspace = display-p3
 
 # ctrl + ` for quick terminal, it displays at top of the screen
 keybind = global:ctrl+grave_accent=toggle_quick_terminal
+
+# enable notifications
+desktop-notifications = true

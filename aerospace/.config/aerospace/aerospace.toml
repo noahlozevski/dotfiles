@@ -168,6 +168,9 @@ run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.anthropic.claudefordesktop'
 run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'layout floating'
 
 # browsers
 [[on-window-detected]]
@@ -208,7 +211,6 @@ if.window-title-regex-substring = 'strudel'
 run = 'move-node-to-workspace 2'
 
 
-
 # ide's
 [[on-window-detected]]
 if.app-id = 'com.apple.dt.Xcode'
@@ -243,9 +245,9 @@ if.app-id = 'com.xkoji.altair'
 run = 'move-node-to-workspace 3'
 
 # messaging apps
-[[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
-run = 'move-node-to-workspace 4'
+# [[on-window-detected]]
+# if.app-id = 'com.tinyspeck.slackmacgap'
+# run = 'move-node-to-workspace 4'
 [[on-window-detected]]
 if.app-id = 'com.microsoft.Outlook'
 run = 'move-node-to-workspace 4'
