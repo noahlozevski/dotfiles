@@ -8,8 +8,18 @@
 [core]
 	excludesfile = ~/.config/git/.gitignore_global
 	editor = nvim
+[diff]
+	external = difft --color=always --display=side-by-side
+	tool = difftastic
+[difftool]
+	prompt = false
+[difftool "difftastic"]
+	cmd = difft --color=always --display=side-by-side "$LOCAL" "$REMOTE"
 [alias]
 	dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
 	g = log --graph --decorate --oneline --all --format='format:%C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
+	rawdiff = diff --no-ext-diff
+	showd = show --ext-diff
+	logd = log -p --ext-diff
 [init]
 	defaultBranch = main
